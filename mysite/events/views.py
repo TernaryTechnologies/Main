@@ -1,9 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from rest_framework import generics
+from .serializers import EventSerializer
+from .models import Event
 
 import csv
 
 # Create your views here.
+
+class EventView(generics.ListAPIView):
+  queryset = Event.objects.all()
+  serializer_class = EventSerializer
 
 def index(request):
   return HttpResponse("Hello, you are at the events index")
