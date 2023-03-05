@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'events.apps.EventsConfig',
     'rest_framework',
     'frontend.apps.FrontendConfig',
+
+    'import_export',
 ]
 
 MIDDLEWARE = [
