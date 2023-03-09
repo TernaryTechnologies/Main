@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import generics, status
-from .serializers import EventSerializer
+from .serializers import EventSerializer, CreateEventSerializer
 from .models import Event
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,6 +13,22 @@ import csv
 class EventView(generics.ListAPIView):
   queryset = Event.objects.all()
   serializer_class = EventSerializer
+
+class CreateEventView(APIView):
+  serializer_class = CreateEventSerializer
+
+  def post(self, request, format=None):
+    serializer = self.serializer_class(data=request.data)
+    if serializer.is_valid():
+      sport = serializer.data.get('sport')
+      city = serializer.data.get('city')
+      datetime = serializer.data.get('datetime')
+      # add creator here later
+      event = Event(sport=sport.lower(),city=city.lower(),datetime=datetime)
+      event.save()
+
+      return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
+
 
 class GetEventsBySport(APIView):
   serializer_class = EventSerializer
