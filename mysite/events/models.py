@@ -16,7 +16,7 @@ def generate_unique_code():
 # Create your models here.
 
 class Event(models.Model):
-  code = models.CharField(max_length=8, default="", unique=True)
+  code = models.CharField(max_length=8, default=generate_unique_code, unique=True)
   sport = models.CharField(max_length=15)
   city = models.CharField(max_length=30)
   datetime = models.DateTimeField()
