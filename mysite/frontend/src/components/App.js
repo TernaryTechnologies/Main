@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom"
 import HomePage from "./HomePage";
 import CreateEventPage from "./CreateEventPage";
+import EventList from "./EventList";
 
 
 export default class App extends Component {
@@ -15,7 +16,8 @@ export default class App extends Component {
       <Router>
         <Routes>
           <Route exact path='/' element={<HomePage />} />
-          <Route path='/create' element={<CreateEventPage />} />
+          <Route exact path='/create' element={<CreateEventPage />} />
+          <Route exact path='/test' element={<EventList sport='soccer' />} /> 
         </Routes>
       </Router>
     );
