@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-ro
 import HomePage from "./HomePage";
 import CreateEventPage from "./CreateEventPage";
 import EventList from "./EventList";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 
 
 export default class App extends Component {
@@ -13,6 +16,7 @@ export default class App extends Component {
 
   render() {
     return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
         <Routes>
           <Route exact path='/' element={<HomePage />} />
@@ -20,6 +24,7 @@ export default class App extends Component {
           <Route exact path='/test' element={<EventList sport='soccer' />} /> 
         </Routes>
       </Router>
+      </LocalizationProvider>
     );
   }
 }
