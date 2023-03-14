@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date, time
 import string
 import random
 
@@ -19,5 +20,6 @@ class Event(models.Model):
   code = models.CharField(max_length=8, default=generate_unique_code, unique=True)
   sport = models.CharField(max_length=15)
   city = models.CharField(max_length=30)
-  datetime = models.DateTimeField()
+  date = models.DateField(default=date.today)
+  time = models.TimeField(default=time(10, 00))
 

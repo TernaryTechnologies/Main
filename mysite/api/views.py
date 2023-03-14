@@ -22,9 +22,10 @@ class CreateEventView(APIView):
     if serializer.is_valid():
       sport = serializer.data.get('sport')
       city = serializer.data.get('city')
-      datetime = serializer.data.get('datetime')
+      date = serializer.data.get('date')
+      time = serializer.data.get('time')
       # add creator here later
-      event = Event(sport=sport.lower(),city=city.lower(),datetime=datetime)
+      event = Event(sport=sport.lower(),city=city.lower(), date=date, time=time)
       event.save()
 
       return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
@@ -48,7 +49,7 @@ class GetEventsBySport(APIView):
     return Response({'Bad Request': 'Sport parameter not found in request'}, status=status.HTTP_400_BAD_REQUEST)
 
 def index(request):
-  return HttpResponse("Hello, you are at the events index")
+  return HttpResponse("Hello, you are at the api index")
 
 def read_csv(filename):
   db = []
