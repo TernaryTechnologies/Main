@@ -20,6 +20,6 @@ from mysite import views
 urlpatterns = [
     path('', include('frontend.urls')),
     path('home', views.home_view, name='home'),
-    path('events/', include('events.urls')),
+    path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]
