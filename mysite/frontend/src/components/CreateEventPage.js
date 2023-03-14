@@ -53,17 +53,21 @@ export default class CreateEventPage extends Component {
   }
 
   handleEventButtonPressed() {
-    
     const requestOptions = {
       method: 'POST',
-      header: {'Accept': 'application/json;','Content-Type': 'application/json;'},
+      headers: {
+        'Accept': 'application/json;',
+        'Content-Type': 'application/json;'
+      },
       body: JSON.stringify({
         sport: this.state.sport,
         city: this.state.city,
         date: this.state.date,
         time: this.state.time,
       }),
+      
     };
+    console.log(requestOptions)
     fetch('/api/create-event', requestOptions)
       .then((response) => response.json())
       .then((data) => console.log(data));
