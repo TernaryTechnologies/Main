@@ -23,3 +23,22 @@ class Event(models.Model):
   date = models.DateField(default=date.today)
   time = models.TimeField(default=time(10, 00))
 
+
+class Sport(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+class Game(models.Model):
+    name = models.CharField(max_length=200)
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
+    location = models.CharField(max_length=200)
+    date = models.DateField()
+    time = models.TimeField()
+    players = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
