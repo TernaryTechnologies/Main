@@ -6,4 +6,4 @@ from import_export.admin import ImportExportModelAdmin
 
 class gameAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     ...
-admin.site.register(game, gameAdmin)
+admin.site.register(Game, gameAdmin)
