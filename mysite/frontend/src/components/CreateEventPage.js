@@ -42,7 +42,7 @@ export default class CreateEventPage extends Component {
 
   handleDateChange = (date) => {
     this.setState({
-      date: format(new Date(date), 'yyyy/MM/dd'),
+      date: format(new Date(date), 'yyyy-MM-dd'),
     });
   };
 
@@ -56,8 +56,8 @@ export default class CreateEventPage extends Component {
     const requestOptions = {
       method: 'POST',
       headers: {
-        'Accept': 'application/json;',
-        'Content-Type': 'application/json;'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         sport: this.state.sport,
@@ -69,9 +69,19 @@ export default class CreateEventPage extends Component {
     };
     console.log(requestOptions)
     fetch('/api/create-event', requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+      })
+      .then((data) => console.log(data))
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }
+  
 
   render() {
     return (
