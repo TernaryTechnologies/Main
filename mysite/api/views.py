@@ -25,11 +25,13 @@ class CreateEventView(APIView):
       date = serializer.data.get('date')
       time = serializer.data.get('time')
       # add creator here later
-      event = Event(sport=sport.lower(),city=city.lower(), date=date, time=time)
+      event = Event(sport=sport.lower(), city=city.lower(), date=date, time=time)
       event.save()
 
       return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
-
+    else:
+      print("Serializer errors:", serializer.errors)
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetEventsBySport(APIView):
   serializer_class = EventSerializer
