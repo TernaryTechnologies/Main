@@ -122,8 +122,10 @@ export default class CreateEventPage extends Component {
           </FormControl>
         </Grid>
         <Grid item xs={12} align="center">
-          <DatePicker 
-            onChange={this.handleDateChange}/>
+          <FormControl>
+            <DatePicker 
+              onChange={this.handleDateChange}/>
+          </FormControl>
         </Grid>
         <Grid item xs={12} align="center">
           <FormControl>
