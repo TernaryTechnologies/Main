@@ -3,9 +3,57 @@ import React, { Component } from "react";
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      currLocation: {
+        latitude: null,
+        longitude: null
+      }
+    };
+    
+  }
+  
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          currLocation: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          }
+        });
+      },
+      (error) => {
+        let errorMessage;
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "User denied the request for Geolocation.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Location information is unavailable.";
+            break;
+          case error.TIMEOUT:
+            errorMessage = "The request to get user location timed out.";
+            break;
+          default:
+            errorMessage = "An unknown error occurred.";
+        }
+        console.log("Error getting location: ", errorMessage);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      }
+    );
   }
 
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchId);
+  }
+  
+  
   render() {
+    const { latitude, longitude } = this.state.currLocation;
     return (
       <div>
         <div className="header">
@@ -29,6 +77,8 @@ export default class HomePage extends Component {
         <div className="content-wrapper">
           <h2>Welcome to My App</h2>
           <p>This application is meant to connect sports enthusiasts and facilitate pickup games.</p>
+          <p>Latitude: {latitude} </p>
+          <p>Longitude: {longitude} </p>
           <button>Get Started</button>
         </div>
         <footer>
