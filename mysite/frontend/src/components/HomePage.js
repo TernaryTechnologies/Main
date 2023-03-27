@@ -1,13 +1,17 @@
 import React, { Component } from "react";
+import GoogleMapReact from 'google-map-react';
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currLocation: {
-        latitude: null,
-        longitude: null
-      }
+        latitude: 34.057919,
+        longitude: -117.821342,
+      },
+      zoom: 11
     };
     
   }
@@ -53,11 +57,12 @@ export default class HomePage extends Component {
   
   
   render() {
+    const zoom = this.state.zoom;
     const { latitude, longitude } = this.state.currLocation;
     return (
       <div>
         <div className="header">
-          <h1>Pickup Sports Club</h1>
+          <h1>Sport Squad</h1>
           <form className="search-bar">
             <input type="text" placeholder="Search" />
             <button type="submit">Search</button>
@@ -71,18 +76,26 @@ export default class HomePage extends Component {
             <li><a href="#">Profile</a></li>
           </ul>
         </nav>
-        <div className="banner">
-          <h2>Map View</h2>
+        <div style={{height: '250px', width: '100%'}}>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: 'AIzaSyC_lN5xGFRnoUbZMth6Ao0YjN81RK5Xqbw' }}
+            center={{lat: latitude,lng: longitude}}
+            zoom={zoom}
+          >
+            <AnyReactComponent
+              lat={latitude}
+              lng={longitude}
+              text="You Are Here"
+            />
+          </GoogleMapReact>
         </div>
         <div className="content-wrapper">
-          <h2>Welcome to My App</h2>
+          <h2>Welcome to the Squad!</h2>
           <p>This application is meant to connect sports enthusiasts and facilitate pickup games.</p>
-          <p>Latitude: {latitude} </p>
-          <p>Longitude: {longitude} </p>
           <button>Get Started</button>
         </div>
         <footer>
-          
+        
         <div className="footer-wrapper">
           <div className="footer-section">
             <h3>About Us</h3>
