@@ -29,6 +29,7 @@
     "@mui/x-date-pickers": "^6.0.1",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
+    "google-map-react": "^2.2.0",
     "moment": "^2.29.4",
     "react-router-dom": "^6.8.2"
   }
