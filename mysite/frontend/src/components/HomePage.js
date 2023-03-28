@@ -78,7 +78,7 @@ export default class HomePage extends Component {
         </nav>
         <div style={{height: '250px', width: '100%'}}>
           <GoogleMapReact
-            bootstrapURLKeys={{ key: 'AIzaSyC_lN5xGFRnoUbZMth6Ao0YjN81RK5Xqbw' }}
+            bootstrapURLKeys={{ key: 'AIzaSyB_sMVgUoBDYt8hNkW_cEorXESyE93jOgg' }}
             center={{lat: latitude,lng: longitude}}
             zoom={zoom}
           >
