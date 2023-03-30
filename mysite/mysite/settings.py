@@ -32,16 +32,21 @@ ALLOWED_HOSTS = ['ec2-50-18-98-110.us-west-1.compute.amazonaws.com','50.18.98.11
 # Application definition
 
 INSTALLED_APPS = [
+    # preinstalled apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # added tools
     'api.apps.ApiConfig',
     'rest_framework',
-    'frontend.apps.FrontendConfig',
     'import_export',
+
+    # custom apps
+    'frontend.apps.FrontendConfig',
 ]
 
 MIDDLEWARE = [
