@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom"
 import HomePage from "./HomePage";
 import CreateEventPage from "./CreateEventPage";
+import LoginPage from "./LoginPage";
 import EventList from "./EventList";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -22,6 +23,7 @@ export default class App extends Component {
           <Route exact path='/' element={<HomePage />} />
           <Route exact path='/create' element={<CreateEventPage />} />
           <Route exact path='/test' element={<EventList sport='soccer' />} /> 
+          <Route exact path='/members/login' element={<LoginPage />} />
         </Routes>
       </Router>
       </LocalizationProvider>

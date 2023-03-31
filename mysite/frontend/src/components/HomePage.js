@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Link} from "react-router-dom";
 import GoogleMapReact from 'google-map-react';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
@@ -63,17 +64,20 @@ export default class HomePage extends Component {
       <div>
         <div className="header">
           <h1>Sport Squad</h1>
+
           <form className="search-bar">
             <input type="text" placeholder="Search" />
             <button type="submit">Search</button>
           </form>
+          <h2><Link to="/members/login">Login</Link></h2>
         </div>
+
         <nav className="navbar">
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Events</a></li>
-            <li><a href="#">Teams</a></li>
-            <li><a href="#">Profile</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/create">Events</Link></li>
+            <li><Link to="/">Teams</Link></li>
+            <li><Link to="/">Profile</Link></li>
           </ul>
         </nav>
         <div style={{height: '250px', width: '100%'}}>

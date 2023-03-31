@@ -12,14 +12,14 @@ export default class EventList extends Component {
   }
 
   getEventDetails() {
-    fetch('/events/get' + '?sport=' + this.sport)
+    fetch('/api/get' + '?sport=' + this.sport)
       .then((response) => response.json())
       .then((data) => {
         this.data = data;
         this.forceUpdate();
       });
   }
-
+  
   
   render() {
     console.log(this.data);

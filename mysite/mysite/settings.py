@@ -41,12 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # added tools
-    'api.apps.ApiConfig',
     'rest_framework',
     'import_export',
 
     # custom apps
     'frontend.apps.FrontendConfig',
+    'members',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
