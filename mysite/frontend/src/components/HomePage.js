@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Link} from "react-router-dom";
 import GoogleMapReact from 'google-map-react';
+import { Button } from "@mui/material";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -69,7 +70,20 @@ export default class HomePage extends Component {
             <input type="text" placeholder="Search" />
             <button type="submit">Search</button>
           </form>
-          <h2><Link to="/members/login">Login</Link></h2>
+          
+          <h2>
+            
+              <Button color='primary' variant='contained' to='/login' component={Link}>
+                Login
+              </Button>
+            
+            
+              <Button color='primary' variant='contained' to='/register' component={Link}>
+                Register
+              </Button>
+
+          </h2>
+          
         </div>
 
         <nav className="navbar">
