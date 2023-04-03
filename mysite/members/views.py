@@ -1,44 +1,49 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-from rest_framework import generics, status
-from rest_framework.views import APIView
+from rest_framework import generics, status, views
 from rest_framework.response import Response
-from .serializers import UserSerializer
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAdminUser
+from .serializers import RegisterSerializer, UserSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
-class loginView(APIView):
+class ListUsersView(ListAPIView):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
 
-    def post(self, request, format=None):
-        serializer = self.serializer_class(data=request.data)
+class RegisterView(generics.CreateAPIView):
+  queryset = User.objects.all()
+  serializer_class = RegisterSerializer
 
-        if serializer.is_valid():
-            un = serializer.data.get('username')
-            pw = serializer.data.get('password')
+  def create(self, request, *args, **kwargs):
+    response = super().create(request, *args, **kwargs)
+    if response.status_code == status.HTTP_201_CREATED:
+      user = User.objects.get(username=request.data['username'])
+      refresh = RefreshToken.for_user(user)
+      serializer = UserSerializer(user)
+      response.data.update({
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+        'user': serializer.data,
+      })
+    return response
 
-            # see if it's a real user. If so, login
-            user = authenticate(username=un, password=pw)
-            if user is not None:
-                login(request, user)
-                return Response(UserSerializer(user).data, status=status.HTTP_202_ACCEPTED)
-            
-            else:
-                return Response(UserSerializer(user).data, status=status.HTTP_404_NOT_FOUND)
+class LoginView(views.APIView):
+  def post(self, request, *args, **kwargs):
+    username = request.data.get('username')
+    password = request.data.get('password')
 
-        else:
-            print("Serializer errors:", serializer.errors)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    user = authenticate(username=username, password=password)
 
-class logoutView(APIView):
-
-    def post(self, request, format=None):
-      logout(request)
-
-
-#class editMember():
-    
-
-# Create your views here
-# tutorial used:
-#https://www.youtube.com/watch?v=CTrVDi3tt8o
+    if user is not None:
+      refresh = RefreshToken.for_user(user)
+      serializer = UserSerializer(user)
+      data = {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+        'user': serializer.data,
+      }
+      return Response(data, status=status.HTTP_200_OK)
+    else:
+      return Response(status=status.HTTP_401_UNAUTHORIZED)
