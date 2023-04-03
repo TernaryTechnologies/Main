@@ -1,34 +1,78 @@
-import React, { Component } from "react";
+import React, { Component, useReducer, useEffect } from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom"
 import HomePage from "./HomePage";
 import CreateEventPage from "./CreateEventPage";
-import LoginPage from "./LoginPage";
+import LoginForm from "./LoginForm";
 import EventList from "./EventList";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import RegisterForm from "./RegisterForm";
+export const AuthContext = React.createContext();
 
+const initialState = {
+  isAuthenticated: false,
+  user: null,
+  token: null,
+};
 
-
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "LOGIN":
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token
+      };
+    case "LOGOUT":
+      localStorage.clear();
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
+        token: null,
+      };
+    default:
+      return state;
   }
+};
 
-  render() {
-    return (
+function MainApp({ state, dispatch }) {
+  return (
+    <AuthContext.Provider value={{ state, dispatch }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Router>
-        <Routes>
-          <Route exact path='/' element={<HomePage />} />
-          <Route exact path='/create' element={<CreateEventPage />} />
-          <Route exact path='/test' element={<EventList sport='soccer' />} /> 
-          <Route exact path='/members/login' element={<LoginPage />} />
-        </Routes>
-      </Router>
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<HomePage />} />
+            <Route exact path="/create" element={<CreateEventPage />} />
+            <Route exact path="/test" element={<EventList sport="soccer" />} />
+            <Route exact path="/login" element={<LoginForm />} />
+            <Route exact path="/register" element={<RegisterForm />} />
+          </Routes>
+        </Router>
       </LocalizationProvider>
-    );
-  }
+    </AuthContext.Provider>
+  );
+}
+
+function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = JSON.parse(localStorage.getItem("token"));
+    if (user && token) {
+      dispatch({
+        type: "LOGIN",
+        payload: { user, token },
+      });
+    }
+  }, []);
+
+  return <MainApp state={state} dispatch={dispatch} />;
 }
 
 const appDiv = document.getElementById("app");
