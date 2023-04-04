@@ -1,6 +1,35 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "./App";
 import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Container,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import { Box } from "@mui/system";
+import { Paper } from "@mui/material";
+import { PersonOutline, MailOutline, LockOutlined } from "@mui/icons-material";
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  borderRadius: "12px",
+  background: "rgba(255, 255, 255, 0.8)",
+}));
+
+const CenteredContainer = styled(Container)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "100vh",
+});
 
 function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -44,42 +73,120 @@ function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="First Name"
-        value={firstName}
-        onChange={(e) => setFirstName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Last Name"
-        value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
-      />
-      <button type="submit">Register</button>
-    </form>
-  );
+    <CenteredContainer maxWidth="xs">
+      <StyledPaper>
+        <Typography variant="h4" style={{ marginBottom: "1rem", fontWeight: "bold", color: "#0070f3" }}>
+          Register
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="firstName"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                autoFocus
+                InputProps={{
+                  startAdornment: (
+                    <PersonOutline sx={{ color: "action.active", mr: 1, my: -1 }} />
+                  ),
+                }}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="family-name"
+                name="lastName"
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                InputProps={{
+                  startAdornment: (
+                    <PersonOutline sx={{ color: "action.active", mr: 1, my: -1 }} />
+                  ),
+                }}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="username"
+                name="username"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                InputProps={{
+                  startAdornment: (
+                    <PersonOutline sx={{ color: "action.active", mr: 1, my: -1 }} />
+                  ),
+                }}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="email"
+                name="email"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                InputProps={{
+                  startAdornment: (
+                    <MailOutline sx={{ color: "action.active", mr: 1, my: -1 }} />
+                  ),
+                }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="current-password"
+                name="password"
+                required
+                fullWidth
+                id="password"
+                label="Password"
+                type="password"
+                InputProps={{
+                  startAdornment: (
+                    <LockOutlined sx={{ color: "action.active", mr: 1, my: -1 }} />
+                  ),
+                }}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2, backgroundColor: "#0070f3", color: "#fff" }}
+          >
+            Register
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/login" variant="body2" sx={{ color: "#0070f3" }}>
+                Already have an account? Login
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </StyledPaper>
+    </CenteredContainer>
+  );  
 }
 
-export default RegisterForm;
-
+export default RegisterForm; 
