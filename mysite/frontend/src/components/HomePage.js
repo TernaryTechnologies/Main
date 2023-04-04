@@ -8,7 +8,7 @@ const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 function HomePage() {
   const { state, dispatch } = useContext(AuthContext);
-  const { isAuthenticated, user } = state;
+  const { isAuthenticated, user } = useContext(AuthContext).state;
   const navigate = useNavigate();
 
   const [currLocation, setCurrLocation] = useState({
@@ -16,6 +16,7 @@ function HomePage() {
     longitude: -117.821342,
   });
   const [zoom, setZoom] = useState(11);
+  const [nearbyEvents, setNearbyEvents] = useState([]);
   
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -58,17 +59,40 @@ function HomePage() {
   };
 
   const { latitude, longitude } = currLocation;
+
+  const navLinks = [
+    { label: "Home", link: "/" },
+    { label: "Events", link: "/create" },
+    { label: "Teams", link: "/" },
+    { label: "Profile", link: "/" },
+  ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/event/");
+        const data = await response.json();
+        setNearbyEvents(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   
   return (
     <div>
       <div className="header">
         <h1>Sport Squad</h1>
-
+  
         <form className="search-bar">
           <input type="text" placeholder="Search" />
-          <button type="submit">Search</button>
+            <Button variant="contained" color="primary" size="small">
+              Search
+            </Button>
         </form>
-        
+  
         <h2>
           {isAuthenticated ? (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -76,7 +100,11 @@ function HomePage() {
                 Welcome, {user.username}!
               </div>
               <div>
-                <Button color="secondary" variant="contained" onClick={handleLogout}>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={handleLogout}
+                >
                   Logout
                 </Button>
               </div>
@@ -84,49 +112,93 @@ function HomePage() {
           ) : (
             <div style={{ display: "flex", alignItems: "center" }}>
               <div style={{ marginRight: "10px" }}>
-                <Button color="primary" variant="contained" to="/login" component={Link}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  to="/login"
+                  component={Link}
+                >
                   Login
                 </Button>
               </div>
               <div>
-                <Button color="primary" variant="contained" to="/register" component={Link}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  to="/register"
+                  component={Link}
+                >
                   Register
                 </Button>
               </div>
             </div>
           )}
         </h2>
-        
       </div>
-
+  
       <nav className="navbar">
         <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/create">Events</Link></li>
-          <li><Link to="/">Teams</Link></li>
-          <li><Link to="/">Profile</Link></li>
+          {navLinks.map((navLink) => (
+            <li key={navLink.label}>
+              <Link to={navLink.link}>{navLink.label}</Link>
+            </li>
+          ))}
         </ul>
       </nav>
-      <div style={{height: '250px', width: '100%'}}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyB_sMVgUoBDYt8hNkW_cEorXESyE93jOgg' }}
-          center={{lat: latitude,lng: longitude}}
-          zoom={zoom}
-        >
-          <AnyReactComponent
-            lat={latitude}
-            lng={longitude}
-            text="You Are Here"
-          />
-        </GoogleMapReact>
+  
+      <div style={{ display: "flex", height: "400px" }}>
+        
+        <div style={{ width: "50%" }}>
+            <div className="nearby-parks-container">
+              <h2>Nearby Events</h2>
+              <p>
+                There is a Basketball game near you in Pomona going on at 5:00 PM <br></br>
+                Code: "GLRELM" <br></br>
+              </p>
+              <ul>
+                {nearbyEvents.map((event) => (
+                  <li key={event.id}>
+                  <Link to={`/event/${event.id}`}>{event.sport}</Link>
+                </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+        <div style={{ width: "50%" }}>
+          <div className="map-container">
+            <GoogleMapReact
+              bootstrapURLKeys={{
+                key: "AIzaSyB_sMVgUoBDYt8hNkW_cEorXESyE93jOgg",
+              }}
+              center={latitude && longitude ? { lat: latitude, lng: longitude } : undefined}
+              zoom={zoom}
+            >
+                <AnyReactComponent
+                  lat={latitude}
+                  lng={longitude}
+                  text="You Are Here"
+                />
+              {nearbyEvents.map((event) => (
+                <AnyReactComponent 
+                  key={event.id}
+                  lat={event.latitude}
+                  lng={event.longitude}
+                  text={event.name}
+                />
+              ))}
+            </GoogleMapReact>
+          </div>
+        </div>
       </div>
+
       <div className="content-wrapper">
         <h2>Welcome to the Squad!</h2>
         <p>This application is meant to connect sports enthusiasts and facilitate pickup games.</p>
         <Button color="primary" variant="contained" component={Link} to="/register">Get Started</Button>
       </div>
+
       <footer>
-      
       <div className="footer-wrapper">
         <div className="footer-section">
           <h3>About Us</h3>
