@@ -167,5 +167,17 @@ h3 {
 .fab {
   font-size: 2em;
 }
-  
-  
+
+.nearby-parks-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 300px;
+  align-items: center;
+  padding: 50px;
+}
+
+.map-container {
+  height: 300px;
+  padding: 50px;
+}

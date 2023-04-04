@@ -85,7 +85,7 @@ export default class CreateEventPage extends Component {
 
   render() {
     return (
-      <Grid container spacing={2}>
+      <Grid container spacing={2} style={{ padding: '100px 0' }}>
         <Grid item xs={12} align="center">
           <Typography component="h4" variant="h4">
             Event Details
