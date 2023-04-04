@@ -123,7 +123,7 @@ function HomePage() {
       <div className="content-wrapper">
         <h2>Welcome to the Squad!</h2>
         <p>This application is meant to connect sports enthusiasts and facilitate pickup games.</p>
-        <button>Get Started</button>
+        <Button color="primary" variant="contained" component={Link} to="/register">Get Started</Button>
       </div>
       <footer>
       
