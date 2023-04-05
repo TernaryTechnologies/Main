@@ -7,6 +7,5 @@ urlpatterns = [
   path('', index, name='index'),
   path('get', GetEventsBySport.as_view()),
   path('all', EventView.as_view()),
-  path('event', EventView.as_view()),
   path('create-event', CreateEventView.as_view())
 ]
