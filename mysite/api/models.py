@@ -3,36 +3,25 @@ from datetime import date, time
 import string
 import random
 
-def generate_unique_code():
-	length = 6
-
-	while True:
-		code = ''.join(random.choices(string.ascii_uppercase, k=length))
-		if Event.objects.filter(code=code).count() == 0:
-			break
-
-	return code
-
-
 # Create your models here.
 
-class Event(models.Model):
-	code = models.CharField(max_length=8,
-													default=generate_unique_code,
-													unique=True)
-	sport = models.CharField(max_length=15)
-	city = models.CharField(max_length=30)
-	date = models.DateField(default=date.today)
-	time = models.TimeField(default=time(10, 00))
-
-	def __str__(self):
-		return f'Sport:{self.sport}, City:{self.city}, Date:{self.date}, Time:{self.time}'
-
 class Sport(models.Model):
-	name = models.CharField(max_length=200)
+    name = models.CharField(max_length=15, unique=True)
 
-	def __str__(self):
-		return self.name
+    def __str__(self):
+        return self.name
+
+class Event(models.Model):
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
+    date = models.DateField(default=date.today)
+    time = models.TimeField(default=time(10, 00))
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    beginner_friendly = models.BooleanField(default=False)
+    women_only = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.sport} | {self.date} | {self.time}"
 
 class Game(models.Model):
 	name = models.CharField(max_length=200)

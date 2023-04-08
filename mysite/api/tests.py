@@ -1,32 +1,86 @@
-from datetime import datetime
 from django.test import TestCase
-from api.models import Sport, Game, Event
+from django.urls import reverse
+from rest_framework.test import APIClient
+from rest_framework import status
+from decimal import Decimal
+from .models import Sport, Event, Game
+from .serializers import SportSerializer, EventSerializer
+from datetime import datetime
 
 # Create your tests here.
 
-class EventModelTestCase(TestCase):
+class ModelTestCase(TestCase):
     def setUp(self):
+        self.sport = Sport.objects.create(name="soccer")
         self.event = Event.objects.create(
-            sport='soccer',
-            city='pomona',
-            date=datetime.strptime('2023-03-30', '%Y-%m-%d').date(),
-            time=datetime.strptime('16:00', '%H:%M').time(),
+            sport=self.sport,
+            latitude=Decimal('37.421999'),
+            longitude=Decimal('-122.084057'),
+            beginner_friendly=True,
+            women_only=False
         )
 
-    def test_event_string(self):
-        self.assertEqual(str(self.event), 'Sport:soccer, City:pomona, Date:2023-03-30, Time:16:00:00')
+    def test_create_sport(self):
+        sport_count = Sport.objects.count()
+        self.assertEqual(sport_count, 1)
 
-    def test_event_sport(self):
-        self.assertEqual(self.event.sport, 'soccer')
+    def test_create_event(self):
+        event_count = Event.objects.count()
+        self.assertEqual(event_count, 1)
 
-    def test_event_city(self):
-        self.assertEqual(self.event.city, 'pomona')
+class SerializerTestCase(TestCase):
+    def setUp(self):
+        self.sport = Sport.objects.create(name="soccer")
+        self.event = Event.objects.create(
+            sport=self.sport,
+            latitude=Decimal('37.421999'),
+            longitude=Decimal('-122.084057'),
+            beginner_friendly=True,
+            women_only=False
+        )
 
-    def test_event_date(self):
-        self.assertEqual(self.event.date.strftime('%Y-%m-%d'), '2023-03-30')
+    def test_sport_serializer(self):
+        serialized_sport = SportSerializer(self.sport).data
+        self.assertEqual(serialized_sport['name'], self.sport.name)
 
-    def test_game_time(self):
-        self.assertEqual(self.event.time.strftime('%H:%M'), '16:00')
+    def test_event_serializer(self):
+        serialized_event = EventSerializer(self.event).data
+        self.assertEqual(serialized_event['sport']['name'], self.sport.name)
+        self.assertEqual(serialized_event['latitude'], str(self.event.latitude))
+        self.assertEqual(serialized_event['longitude'], str(self.event.longitude))
+        self.assertEqual(serialized_event['beginner_friendly'], self.event.beginner_friendly)
+        self.assertEqual(serialized_event['women_only'], self.event.women_only)
+
+class ViewTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.sport = Sport.objects.create(name="soccer")
+        self.event = Event.objects.create(
+            sport=self.sport,
+            latitude=Decimal('37.421999'),
+            longitude=Decimal('-122.084057'),
+            beginner_friendly=True,
+            women_only=False
+        )
+
+    def test_get_events(self):
+        response = self.client.get(reverse('event_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+    def test_create_event(self):
+        sport_name = self.sport.name
+        event_data = {
+            'sport_name': sport_name,
+            'latitude': '37.336190',
+            'longitude': '-121.890583',
+            'beginner_friendly': True,
+            'women_only': False
+        }
+        response = self.client.post(reverse('create_event'), event_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Event.objects.count(), 2)
+
 
 # These tests cover the basic functionality of the Game model:
 # - checking that _str_ method returns expected string representation of a Game instance 

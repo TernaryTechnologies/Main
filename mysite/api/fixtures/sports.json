@@ -1,0 +1,17 @@
+[
+  { "model": "api.sport", "pk": 1, "fields": { "name": "soccer" } },
+  { "model": "api.sport", "pk": 2, "fields": { "name": "basketball" } },
+  { "model": "api.sport", "pk": 3, "fields": { "name": "tennis" } },
+  { "model": "api.sport", "pk": 4, "fields": { "name": "volleyball" } },
+  { "model": "api.sport", "pk": 5, "fields": { "name": "baseball" } },
+  { "model": "api.sport", "pk": 6, "fields": { "name": "american football" } },
+  { "model": "api.sport", "pk": 7, "fields": { "name": "rugby" } },
+  { "model": "api.sport", "pk": 8, "fields": { "name": "cricket" } },
+  { "model": "api.sport", "pk": 9, "fields": { "name": "golf" } },
+  { "model": "api.sport", "pk": 10, "fields": { "name": "hockey" } },
+  { "model": "api.sport", "pk": 11, "fields": { "name": "swimming" } },
+  { "model": "api.sport", "pk": 12, "fields": { "name": "track and field" } },
+  { "model": "api.sport", "pk": 13, "fields": { "name": "badminton" } },
+  { "model": "api.sport", "pk": 14, "fields": { "name": "table tennis" } },
+  { "model": "api.sport", "pk": 15, "fields": { "name": "squash" } }
+]
