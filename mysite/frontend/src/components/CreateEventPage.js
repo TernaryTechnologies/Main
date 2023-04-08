@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { format } from 'date-fns'
 import {
+  Checkbox,
   Button,
   Grid,
   Typography,
@@ -17,26 +18,26 @@ export default class CreateEventPage extends Component {
     super(props);
     this.state = {
       sport: '',
-      city: '',
       date: format(new Date(), 'yyyy/MM/dd'),
       time: '10:00',
+      latitude: '',
+      longitude: '',
+      beginner_friendly: false,
+      women_only: false,
     };
 
     this.handleEventButtonPressed = this.handleEventButtonPressed.bind(this);
     this.handleSportChange = this.handleSportChange.bind(this);
-    this.handleCityChange = this.handleCityChange.bind(this);
+    this.handleLatitudeChange = this.handleLatitudeChange.bind(this);
+    this.handleLongitudeChange = this.handleLongitudeChange.bind(this);
+    this.handleBeginnerFriendlyChange = this.handleBeginnerFriendlyChange.bind(this);
+    this.handleWomenOnlyChange = this.handleWomenOnlyChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
   }
 
   handleSportChange(e) {
     this.setState({
       sport: e.target.value,
-    });
-  }
-
-  handleCityChange(e) {
-    this.setState({
-      city: e.target.value,
     });
   }
 
@@ -52,6 +53,30 @@ export default class CreateEventPage extends Component {
     });
   }
 
+  handleLatitudeChange(e) {
+    this.setState({
+      latitude: e.target.value,
+    });
+  }
+  
+  handleLongitudeChange(e) {
+    this.setState({
+      longitude: e.target.value,
+    });
+  }
+  
+  handleBeginnerFriendlyChange(e) {
+    this.setState({
+      beginner_friendly: e.target.checked,
+    });
+  }
+  
+  handleWomenOnlyChange(e) {
+    this.setState({
+      women_only: e.target.checked,
+    });
+  }  
+
   handleEventButtonPressed() {
     const requestOptions = {
       method: 'POST',
@@ -60,10 +85,13 @@ export default class CreateEventPage extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        sport: this.state.sport,
-        city: this.state.city,
+        sport_name: this.state.sport,
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
         date: this.state.date,
         time: this.state.time,
+        beginner_friendly: this.state.beginner_friendly,
+        women_only: this.state.women_only,
       }),
       
     };
@@ -108,21 +136,6 @@ export default class CreateEventPage extends Component {
         </Grid>
         <Grid item xs={12} align="center">
           <FormControl>
-            <TextField
-              required={true}
-              type='string'
-              onChange={this.handleCityChange}
-              inputProps={{
-                style: {textAlign: 'center'},
-              }}  
-              />
-            <FormHelperText>
-                <div align='center'>City</div>
-            </FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <FormControl>
             <DatePicker 
               onChange={this.handleDateChange}/>
           </FormControl>
@@ -145,6 +158,48 @@ export default class CreateEventPage extends Component {
           </FormControl>
         </Grid>
         <Grid item xs={12} align="center">
+          <TextField
+            required
+            label="Latitude"
+            type="number"
+            step="0.000001"
+            value={this.state.latitude}
+            onChange={this.handleLatitudeChange}
+          />
+        </Grid>
+        <Grid item xs={12} align="center">
+          <TextField
+            required
+            label="Longitude"
+            type="number"
+            step="0.000001"
+            value={this.state.longitude}
+            onChange={this.handleLongitudeChange}
+          />
+        </Grid>
+        <Grid item xs={12} align="center">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.beginner_friendly}
+                onChange={this.handleBeginnerFriendlyChange}
+              />
+            }
+            label="Beginner Friendly"
+          />
+        </Grid>
+        <Grid item xs={12} align="center">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.women_only}
+                onChange={this.handleWomenOnlyChange}
+              />
+            }
+            label="Women Only"
+          />
+        </Grid>
+        <Grid item xs={12} align="center">
           <Button color='primary' variant='contained' onClick={this.handleEventButtonPressed}>
             Create An Event
           </Button>
@@ -156,5 +211,5 @@ export default class CreateEventPage extends Component {
         </Grid>
       </Grid>
     );
-  }
+  }  
 }
