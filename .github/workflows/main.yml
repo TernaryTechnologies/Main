@@ -23,7 +23,7 @@ jobs:
           source env/bin/activate
           cd Main/mysite
           git checkout -- db.sqlite3
-          git pull --force
+          git pull
           pip install --upgrade -r requirements.txt
           python manage.py collectstatic --no-input
           sudo supervisorctl reload
