@@ -23,6 +23,6 @@ jobs:
           source env/bin/activate
           cd Main/mysite
           git pull
-          pip install -r requirements.txt
+          pip install --upgrade -r requirements.txt
           python manage.py collectstatic --no-input
           sudo service nginx restart
