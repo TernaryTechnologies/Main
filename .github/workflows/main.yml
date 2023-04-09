@@ -25,4 +25,5 @@ jobs:
           git pull
           pip install --upgrade -r requirements.txt
           python manage.py collectstatic --no-input
+          sudo supervisorctl reload
           sudo service nginx restart
