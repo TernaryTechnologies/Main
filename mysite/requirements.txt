@@ -4,10 +4,12 @@ diff-match-patch==20200713
 Django==4.1.6
 django-import-export==3.1.0
 djangorestframework==3.14.0
+djangorestframework-simplejwt==5.2.2
 et-xmlfile==1.1.0
 MarkupPy==1.14
 odfpy==1.4.1
 openpyxl==3.1.1
+PyJWT==2.6.0
 pytz==2022.7.1
 PyYAML==6.0
 sqlparse==0.4.3
