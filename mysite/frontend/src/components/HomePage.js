@@ -154,8 +154,8 @@ function HomePage() {
                 <ul>
                   {nearbyEvents.map((event) => (
                     <li key={event.id}>
-                    <Link to={`/api/all/${event.id}`}>{event.sport}</Link>
-                  </li>
+                      <Link to={`/api/all/${event.id}`}>{event.sport.name}</Link>
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -180,7 +180,7 @@ function HomePage() {
                     key={event.id}
                     lat={event.latitude}
                     lng={event.longitude}
-                    text={event.name}
+                    text={event.id}
                   />
                 ))}
               </GoogleMapReact>
@@ -231,7 +231,7 @@ function HomePage() {
           </div>
         </div>
       </footer>
-      
+
     </div>
   );
 }
