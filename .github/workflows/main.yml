@@ -1,0 +1,27 @@
+name: Update Static Files and Restart Nginx
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: SSH into server and update static files
+      uses: appleboy/ssh-action@master
+      with:
+        host: ec2-18-144-161-150.us-west-1.compute.amazonaws.com
+        username: ubuntu
+        key: ${{ secrets.SERVER_PASSWORD }}
+        port: 22
+        script: |
+          source env/bin/activate
+          cd Main/mysite
+          git pull
+          python manage.py collectstatic --no-input
+          sudo service nginx restart
