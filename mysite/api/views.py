@@ -4,7 +4,9 @@ from rest_framework import generics, status
 from .serializers import EventSerializer, CreateEventSerializer, SportSerializer
 from .models import Event, Sport
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import requests
 
 # Create your views here.
 
@@ -13,7 +15,6 @@ class EventView(generics.ListAPIView):
     serializer_class = EventSerializer
 
 class CreateEventView(APIView):
-
     def post(self, request):
         serializer = CreateEventSerializer(data=request.data)
         if serializer.is_valid():
@@ -39,6 +40,21 @@ class GetEventsBySport(APIView):
               return Response(data, status=status.HTTP_200_OK)
           return Response({'No Events Found': 'Sport Not Found'}, status=status.HTTP_404_NOT_FOUND)
       return Response({'Bad Request': 'Sport parameter not found in request'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def geocode(request):
+    address = request.GET.get('address', '')
+    api_key = 'AIzaSyB_sMVgUoBDYt8hNkW_cEorXESyE93jOgg'
+    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}'
+
+    try:
+        response = requests.get(url)
+        data = response.json()
+        return Response(data)
+    except Exception as e:
+        print("Error geocoding address:", e)
+        return Response({"error": "Error geocoding address"}, status=500)
+
 
 def index(request):
     return HttpResponse("Hello, you are at the api index")
