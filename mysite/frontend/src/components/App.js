@@ -8,6 +8,7 @@ import EventList from "./EventList";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import RegisterForm from "./RegisterForm";
+import GoogleMapsWrapper from "./GoogleMapsWrapper";
 export const AuthContext = React.createContext();
 
 const initialState = {
@@ -42,19 +43,21 @@ const reducer = (state, action) => {
 
 function MainApp({ state, dispatch }) {
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Router>
-          <Routes>
-            <Route exact path="/" element={<HomePage />} />
-            <Route exact path="/create" element={<CreateEventPage />} />
-            <Route exact path="/test" element={<EventList sport="soccer" />} />
-            <Route exact path="/login" element={<LoginForm />} />
-            <Route exact path="/register" element={<RegisterForm />} />
-          </Routes>
-        </Router>
-      </LocalizationProvider>
-    </AuthContext.Provider>
+    <GoogleMapsWrapper>
+      <AuthContext.Provider value={{ state, dispatch }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Router>
+            <Routes>
+              <Route exact path="/" element={<HomePage />} />
+              <Route exact path="/create" element={<CreateEventPage />} />
+              <Route exact path="/test" element={<EventList sport="soccer" />} />
+              <Route exact path="/login" element={<LoginForm />} />
+              <Route exact path="/register" element={<RegisterForm />} />
+            </Routes>
+          </Router>
+        </LocalizationProvider>
+      </AuthContext.Provider>
+    </GoogleMapsWrapper>
   );
 }
 

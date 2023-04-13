@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import {Link, useNavigate} from "react-router-dom";
-import GoogleMapReact from 'google-map-react';
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { AuthContext } from "./App";
-
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 function HomePage() {
   const { state, dispatch } = useContext(AuthContext);
@@ -17,7 +15,7 @@ function HomePage() {
   });
   const [zoom, setZoom] = useState(11);
   const [nearbyEvents, setNearbyEvents] = useState([]);
-  
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -80,19 +78,18 @@ function HomePage() {
     fetchData();
   }, []);
 
-  
   return (
     <div>
       <div className="header">
         <h1>Sport Squad</h1>
-  
+
         <form className="search-bar">
           <input type="text" placeholder="Search" />
-            <Button variant="contained" color="primary" size="small">
-              Search
-            </Button>
+          <Button variant="contained" color="primary" size="small">
+            Search
+          </Button>
         </form>
-  
+
         <h2>
           {isAuthenticated ? (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -135,7 +132,7 @@ function HomePage() {
           )}
         </h2>
       </div>
-  
+
       <nav className="navbar">
         <ul>
           {navLinks.map((navLink) => (
@@ -149,63 +146,61 @@ function HomePage() {
       {isAuthenticated ? (
         <div style={{ display: "flex", height: "400px" }}>
           <div style={{ width: "50%" }}>
-              <div className="nearby-parks-container">
-                <h2>Nearby Events</h2>
-                <ul>
-                  {nearbyEvents.map((event) => (
-                    <li key={event.id}>
-                      <Link to={`/api/all/${event.id}`}>{event.sport.name}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="nearby-parks-container">
+              <h2>Nearby Events</h2>
+              <ul>
+                {nearbyEvents.map((event) => (
+                  <li key={event.id}>
+                    <Link to={`/api/all/${event.id}`}>{event.sport.name}</Link>
+                  </li>
+                ))}
+              </ul>
             </div>
+          </div>
 
           <div style={{ width: "50%" }}>
             <div className="map-container">
-              <GoogleMapReact
-                bootstrapURLKeys={{
-                  key: "AIzaSyB_sMVgUoBDYt8hNkW_cEorXESyE93jOgg",
-                }}
-                center={latitude && longitude ? { lat: latitude, lng: longitude } : undefined}
+              <GoogleMap
+                mapContainerStyle={{ width: "100%", height: "100%" }}
+                center={{ lat: latitude, lng: longitude }}
                 zoom={zoom}
               >
-                  <AnyReactComponent
-                    lat={latitude}
-                    lng={longitude}
-                    text="You Are Here"
-                  />
-                {nearbyEvents.map((event) => (
-                  <AnyReactComponent 
-                    key={event.id}
-                    lat={event.latitude}
-                    lng={event.longitude}
-                    text={event.id}
-                  />
-                ))}
-              </GoogleMapReact>
+                <Marker
+                  position={{ lat: latitude, lng: longitude }}
+                  label=""
+                />
+              </GoogleMap>
             </div>
           </div>
         </div>
-        ) : (
+      ) : (
         <div>
-          <div style={{height: '250px', width: '100%'}}>
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: 'AIzaSyB_sMVgUoBDYt8hNkW_cEorXESyE93jOgg' }}
-              center={{lat: latitude,lng: longitude}}
+          <div style={{ height: "250px", width: "100%" }}>
+            <GoogleMap
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+              center={{ lat: latitude, lng: longitude }}
               zoom={zoom}
             >
-              <AnyReactComponent
-                lat={latitude}
-                lng={longitude}
-                text="You Are Here"
+              <Marker
+                position={{ lat: latitude, lng: longitude }}
+                label=""
               />
-            </GoogleMapReact>
+            </GoogleMap>
           </div>
           <div className="content-wrapper">
             <h2>Welcome to the Squad!</h2>
-            <p>This application is meant to connect sports enthusiasts and facilitate pickup games.</p>
-            <Button color="primary" variant="contained" component={Link} to="/register">Get Started</Button>
+            <p>
+              This application is meant to connect sports enthusiasts and
+              facilitate pickup games.
+            </p>
+            <Button
+              color="primary"
+              variant="contained"
+              component={Link}
+              to="/register"
+            >
+              Get Started
+            </Button>
           </div>
         </div>
       )}
@@ -214,7 +209,10 @@ function HomePage() {
         <div className="footer-wrapper">
           <div className="footer-section">
             <h3>About Us</h3>
-            <p>We are a pickup sports application dedicated to connecting players and creating communities through sports.</p>
+            <p>
+              We are a pickup sports application dedicated to connecting players
+              and creating communities through sports.
+            </p>
           </div>
           <div className="footer-section">
             <h3>Contact Us</h3>
@@ -224,17 +222,27 @@ function HomePage() {
           <div className="footer-section">
             <h3>Follow Us</h3>
             <ul className="social-media-icons">
-              <li><a href="#"><i className="fab fa-facebook"></i></a></li>
-              <li><a href="#"><i className="fab fa-twitter"></i></a></li>
-              <li><a href="#"><i className="fab fa-instagram"></i></a></li>
+              <li>
+                <a href="#">
+                  <i className="fab fa-facebook"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fab fa-twitter"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="fab fa-instagram"></i>
+                </a>
+              </li>
             </ul>
           </div>
         </div>
       </footer>
-
     </div>
   );
 }
-
 
 export default HomePage;
