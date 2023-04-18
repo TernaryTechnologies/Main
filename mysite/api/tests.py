@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework.test import APIClient
+from django.utils import timezone
+from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 from decimal import Decimal
 from .models import Sport, Event, Game
@@ -81,6 +82,49 @@ class ViewTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Event.objects.count(), 2)
 
+def create_test_data():
+    sport1 = Sport.objects.create(name="Basketball")
+    sport2 = Sport.objects.create(name="Soccer")
+
+    now = timezone.now()
+    Event.objects.create(sport=sport1, date=now.date(), time=now.time(), latitude=40.7128, longitude=-74.0060, beginner_friendly=True, women_only=False)
+    Event.objects.create(sport=sport2, date=now.date(), time=now.time(), latitude=40.7128, longitude=-74.0060, beginner_friendly=False, women_only=True)
+    Event.objects.create(sport=sport1, date=now.date(), time=now.time(), latitude=40.7590, longitude=-73.9845, beginner_friendly=True, women_only=True)
+
+class FilteredEventViewTest(APITestCase):
+    def setUp(self):
+        create_test_data()
+
+    def test_filter_by_sport(self):
+        url = reverse('filtered_events')  # Make sure to update this with the actual name of your view in urls.py
+        response = self.client.get(url, {'sport': 'Basketball'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+    def test_filter_by_beginner_friendly(self):
+        url = reverse('filtered_events')
+        response = self.client.get(url, {'beginner_friendly': '1'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+    def test_filter_by_women_only(self):
+        url = reverse('filtered_events')
+        response = self.client.get(url, {'women_only': '1'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+    def test_filter_by_range(self):
+        url = reverse('filtered_events')
+        response = self.client.get(url, {'user_lat': '40.7128', 'user_lng': '-74.0060', 'range': '1'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+    def test_filter_by_multiple_criteria(self):
+        url = reverse('filtered_events')
+        response = self.client.get(url, {'sport': 'Basketball', 'beginner_friendly': '1', 'women_only': '1', 'user_lat': '40.8330', 'user_lng': '-74.0661', 'range': '7'})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
 
 # These tests cover the basic functionality of the Game model:
 # - checking that _str_ method returns expected string representation of a Game instance 
