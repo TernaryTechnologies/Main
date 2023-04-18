@@ -119,49 +119,48 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 400px); /* subtract the height of the banner and header from the viewport height */
+  min-height: calc(100vh - 400px); /* subtract the height of the banner and header from the viewport height */
   flex-grow: 1; /* use flex-grow to expand the element to fill remaining height */
 }
 
 footer {
   background-color: #333;
   color: #fff;
-  padding: 20px;
-  margin-top: auto;
 }
 
 .footer-wrapper {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
+  padding: 20px;
 }
 
 .footer-section {
-  flex-basis: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-section h3 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-section p {
+  font-size: 1rem;
+  max-width: 40vw;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .footer-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 h3 {
   font-size: 1.5em;
   margin-bottom: 10px;
-}
-
-.social-media-icons {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.social-media-icons li {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-.social-media-icons li:last-child {
-  margin-right: 0;
-}
-
-.social-media-icons a {
-  color: #fff;
 }
 
 .fab {
@@ -177,7 +176,72 @@ h3 {
   padding: 50px;
 }
 
-.map-container {
-  height: 300px;
-  padding: 50px;
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 1rem
 }
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  .filter-item {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.event-list-item {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 16px;
+  list-style-type: none;
+}
+
+.event-number {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.event-detail {
+  margin-bottom: 4px;
+}
+
+.events-label {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.map-and-events-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.event-list-wrapper {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  max-width: 500px;
+  min-width: 350px;
+  margin-right: 2rem;
+}
+
+.map-wrapper {
+  flex: 1; /* Increase this value to give more space to the map */
+  position: relative;
+  margin-right: 4rem;
+  max-width: 650px;
+  min-width: 450px;
+  max-height: 500px;
+}
+
