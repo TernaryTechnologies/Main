@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { AuthContext } from "./App";
 import { GoogleMap, Marker } from "@react-google-maps/api";
+import FilteredEvents from "./FilteredEvents";
 
 function HomePage() {
   const { state, dispatch } = useContext(AuthContext);
@@ -83,13 +84,6 @@ function HomePage() {
       <div className="header">
         <h1>Sport Squad</h1>
 
-        <form className="search-bar">
-          <input type="text" placeholder="Search" />
-          <Button variant="contained" color="primary" size="small">
-            Search
-          </Button>
-        </form>
-
         <h2>
           {isAuthenticated ? (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -144,34 +138,9 @@ function HomePage() {
       </nav>
 
       {isAuthenticated ? (
-        <div style={{ display: "flex", height: "400px" }}>
-          <div style={{ width: "50%" }}>
-            <div className="nearby-parks-container">
-              <h2>Nearby Events</h2>
-              <ul>
-                {nearbyEvents.map((event) => (
-                  <li key={event.id}>
-                    <Link to={`/api/all/${event.id}`}>{event.sport.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div style={{ width: "50%" }}>
-            <div className="map-container">
-              <GoogleMap
-                mapContainerStyle={{ width: "100%", height: "100%" }}
-                center={{ lat: latitude, lng: longitude }}
-                zoom={zoom}
-              >
-                <Marker
-                  position={{ lat: latitude, lng: longitude }}
-                  label=""
-                />
-              </GoogleMap>
-            </div>
-          </div>
+        <div style={{ minHeight: "80vh" }}>
+          <br />
+          <FilteredEvents latitude={latitude} longitude={longitude} />
         </div>
       ) : (
         <div>
@@ -181,10 +150,7 @@ function HomePage() {
               center={{ lat: latitude, lng: longitude }}
               zoom={zoom}
             >
-              <Marker
-                position={{ lat: latitude, lng: longitude }}
-                label=""
-              />
+              <Marker position={{ lat: latitude, lng: longitude }} label="" />
             </GoogleMap>
           </div>
           <div className="content-wrapper">
@@ -201,6 +167,7 @@ function HomePage() {
             >
               Get Started
             </Button>
+            <br/>
           </div>
         </div>
       )}
@@ -218,26 +185,6 @@ function HomePage() {
             <h3>Contact Us</h3>
             <p>Email: info@pickupsportsapp.com</p>
             <p>Phone: 555-555-5555</p>
-          </div>
-          <div className="footer-section">
-            <h3>Follow Us</h3>
-            <ul className="social-media-icons">
-              <li>
-                <a href="#">
-                  <i className="fab fa-facebook"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i className="fab fa-twitter"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i className="fab fa-instagram"></i>
-                </a>
-              </li>
-            </ul>
           </div>
         </div>
       </footer>
