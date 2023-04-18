@@ -47,3 +47,7 @@ class CreateEventSerializer(serializers.ModelSerializer):
         event = Event.objects.create(sport=sport, **validated_data)
         return event
 
+class ReverseGeocodeSerializer(serializers.Serializer):
+    latitude = serializers.FloatField()
+    longitude = serializers.FloatField()
+    address = serializers.CharField()
