@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { AuthContext } from "./App";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import FilteredEvents from "./FilteredEvents";
+import Footer from './Footer';
 
 function HomePage() {
   const { state, dispatch } = useContext(AuthContext);
@@ -81,6 +82,7 @@ function HomePage() {
 
   return (
     <div>
+
       <div className="header">
         <h1>Sport Squad</h1>
 
@@ -171,23 +173,9 @@ function HomePage() {
           </div>
         </div>
       )}
+      
+      <Footer />
 
-      <footer>
-        <div className="footer-wrapper">
-          <div className="footer-section">
-            <h3>About Us</h3>
-            <p>
-              We are a pickup sports application dedicated to connecting players
-              and creating communities through sports.
-            </p>
-          </div>
-          <div className="footer-section">
-            <h3>Contact Us</h3>
-            <p>Email: info@pickupsportsapp.com</p>
-            <p>Phone: 555-555-5555</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
