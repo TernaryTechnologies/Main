@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import {AppBar, Button, Card, CardContent, CardMedia, IconButton, Toolbar, Typography} from "@mui/material";
 import { AuthContext } from "./App";
 import { GoogleMap, Marker } from "@react-google-maps/api";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import ActionBlock from "./ActionBlock";
+import Hero from "./Hero";
+import AppFooter from "./AppFooter";
+import withRoot from "./withRoot";
+import Box from "@mui/material/Box";
 import FilteredEvents from "./FilteredEvents";
-import Footer from './Footer';
+import Grid from "@mui/material/Grid";
+import AppForm from "./AppForm";
 
 function HomePage() {
   const { state, dispatch } = useContext(AuthContext);
@@ -60,13 +68,6 @@ function HomePage() {
 
   const { latitude, longitude } = currLocation;
 
-  const navLinks = [
-    { label: "Home", link: "/" },
-    { label: "Events", link: "/create" },
-    { label: "Teams", link: "/" },
-    { label: "Profile", link: "/" },
-  ];
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -82,10 +83,8 @@ function HomePage() {
 
   return (
     <div>
-
       <div className="header">
         <h1>Sport Squad</h1>
-
         <h2>
           {isAuthenticated ? (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -129,20 +128,57 @@ function HomePage() {
         </h2>
       </div>
 
-      <nav className="navbar">
-        <ul>
-          {navLinks.map((navLink) => (
-            <li key={navLink.label}>
-              <Link to={navLink.link}>{navLink.label}</Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
+      <Navbar/>
+      <Hero/>
       {isAuthenticated ? (
-        <div style={{ minHeight: "80vh" }}>
-          <br />
-          <FilteredEvents latitude={latitude} longitude={longitude} />
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "50%" }}>
+              {/*  {nearbyEvents.map((event) => (
+                    <Card sx={{ display: 'flex', }} className={"events-card"} key={event.id}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <CardContent sx={{ flex: '1 0 auto' }}>
+                          <Typography component="div" variant="h5" style={{fontSize: '16px'}}>
+                            <Link to={`/api/all/${event.id}`}>{event.sport.name}</Link>
+                          </Typography>
+                          <Typography variant="subtitle1" color="text.secondary" component="div">
+                            Mac Miller
+                          </Typography>
+                        </CardContent>
+                        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                        </Box>
+                      </Box>
+                      <CardMedia
+                          component="img"
+                          sx={{ width: 151 }}
+                          image="https://ec.europa.eu/eurostat/documents/6921402/9104237/Shutterstock_Lisa_Kolbasa.png/f988f8b6-4138-4a91-9761-885bacab0ce2?t=1533725002000"
+                          alt="Live from space album cover"
+                      />
+                    </Card>
+                ))}*/}
+              <AppForm>
+                <Typography variant="h3" gutterBottom marked="center" align="center" style={{fontFamily: 'Open Sans\', sans-serif'}}>
+                  Events
+                </Typography>
+                <Grid container spacing={2}>
+                  <FilteredEvents latitude={latitude} longitude={longitude} />
+                </Grid>
+              </AppForm>
+          </div>
+
+          <div style={{ width: "50%" }}>
+            <div className="map-container">
+              <GoogleMap
+                mapContainerStyle={{ width: "100%", height: "100%" }}
+                center={{ lat: latitude, lng: longitude }}
+                zoom={zoom}
+              >
+                <Marker
+                  position={{ lat: latitude, lng: longitude }}
+                  label=""
+                />
+              </GoogleMap>
+            </div>
+          </div>
         </div>
       ) : (
         <div>
@@ -152,32 +188,18 @@ function HomePage() {
               center={{ lat: latitude, lng: longitude }}
               zoom={zoom}
             >
-              <Marker position={{ lat: latitude, lng: longitude }} label="" />
+              <Marker
+                position={{ lat: latitude, lng: longitude }}
+                label=""
+              />
             </GoogleMap>
-          </div>
-          <div className="content-wrapper">
-            <h2>Welcome to the Squad!</h2>
-            <p>
-              This application is meant to connect sports enthusiasts and
-              facilitate pickup games.
-            </p>
-            <Button
-              color="primary"
-              variant="contained"
-              component={Link}
-              to="/register"
-            >
-              Get Started
-            </Button>
-            <br/>
           </div>
         </div>
       )}
-      
-      <Footer />
 
+      <AppFooter/>
     </div>
   );
 }
 
-export default HomePage;
+export default withRoot(HomePage);

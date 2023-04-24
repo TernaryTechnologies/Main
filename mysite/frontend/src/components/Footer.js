@@ -1,28 +1,19 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class Footer extends Component {
-
-    render() {
-        return (
-            <footer>
-            <div className="footer-wrapper">
-              <div className="footer-section">
-                <h3>About Us</h3>
-                <p>
-                  We are a pickup sports application dedicated to connecting players
-                  and creating communities through sports.
-                </p>
-              </div>
-              <div className="footer-section">
-                <h3>Contact Us</h3>
-                <p>Email: info@pickupsportsapp.com</p>
-                <p>Phone: 555-555-5555</p>
-              </div>
+const Footer = () => {
+    return (
+        <section id="footer" className="teal lighten-1">
+            <div className="container">
+                <div className="row">
+                    <div className="col s3"></div>
+                    <div className="col s6 center-align white-text">
+                        © 2019 All Rights Reserved Terms of Use and Privacy Policy
+                    </div>
+                    <div className="col s3"></div>
+                </div>
             </div>
-          </footer>
-        );
-    }
-
-}
+        </section>
+    );
+};
 
 export default Footer;

@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
 import PersonOutline from "@mui/icons-material/PersonOutline";
 import LockOutlined from "@mui/icons-material/LockOutlined";
+import Navbar from "./Navbar";
+import AppFooter from "./AppFooter";
+import AppForm from "./AppForm";
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   height: "100vh",
@@ -61,73 +64,85 @@ function LoginForm() {
   };
 
   return (
-    <StyledGrid container justifyContent="center" alignItems="center" style={{ minHeight: "100vh" }}>
-      <Grid item xs={12} sm={8} md={4}>
-        <StyledPaper style={{ padding: "24px" }}>
-          <form onSubmit={handleSubmit}>
-            <Typography variant="h4" align="center" style={{ marginBottom: "1rem", fontWeight: "bold", color: "#0070f3" }}>
-              Login
+      <>
+        <Navbar/>
+        <AppForm>
+          <React.Fragment>
+            <Typography variant="h3" gutterBottom marked="center" align="center" style={{fontFamily: 'Open Sans\', sans-serif'}}>
+              Sign In
             </Typography>
-            <TextField
-              fullWidth
-              margin="normal"
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton>
-                      <PersonOutline />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton>
-                      <LockOutlined />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button
-              fullWidth
-              color="primary"
-              variant="contained"
-              type="submit"
-              style={{ marginTop: "16px" }}
-            >
-              Login
-            </Button>
-            <Grid container justifyContent="center" style={{ marginTop: "16px" }}>
-              <Grid item>
-                <Button
-                  color="secondary"
-                  variant="outlined"
-                  component={Link}
-                  to="/register"
-                >
-                  Create Account
-                </Button>
+            <Typography variant="body2" align="center">
+              {'Not a member yet? '}
+              <Link
+                  href="/premium-themes/onepirate/sign-up/"
+                  align="center"
+                  underline="always"
+              >
+                Sign Up here
+              </Link>
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                  var
+                  fullWidth
+                  margin="normal"
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton>
+                            <PersonOutline />
+                          </IconButton>
+                        </InputAdornment>
+                    ),
+                  }}
+              />
+              <TextField
+                  fullWidth
+                  margin="normal"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton>
+                            <LockOutlined />
+                          </IconButton>
+                        </InputAdornment>
+                    ),
+                  }}
+              />
+              <Button
+                  fullWidth
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  style={{ marginTop: "16px" }}
+              >
+                Login
+              </Button>
+              <Grid container justifyContent="center" style={{ marginTop: "16px" }}>
+                <Grid item>
+                  <Button
+                      color="secondary"
+                      variant="outlined"
+                      component={Link}
+                      to="/register"
+                  >
+                    Create Account
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </StyledPaper>
-      </Grid>
-    </StyledGrid>
-  );
+            </form>
+          </React.Fragment>
+        </AppForm>
+        <AppFooter/>
+      </>  );
 }
 
 export default LoginForm;
