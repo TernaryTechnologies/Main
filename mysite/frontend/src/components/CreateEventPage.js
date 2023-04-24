@@ -8,7 +8,7 @@ import {
   TextField,
   FormHelperText,
   FormControl,
-  FormControlLabel,
+  FormControlLabel, AppBar, InputAdornment, IconButton,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,6 +17,11 @@ import {
   GoogleMap,
   Marker,
 } from "@react-google-maps/api";
+import AppFooter from "./AppFooter";
+import PersonOutline from "@mui/icons-material/PersonOutline";
+import LockOutlined from "@mui/icons-material/LockOutlined";
+import Navbar from "./Navbar";
+import AppForm from "./AppForm";
 
 function roundToDecimalPlaces(value, decimalPlaces) {
   const factor = Math.pow(10, decimalPlaces);
@@ -142,123 +147,137 @@ const CreateEventPage = () => {
   };
 
   return (
-      <Grid container spacing={2} style={{ padding: "100px 0" }}>
-        <Grid item xs={12} align="center">
-          <Typography component="h4" variant="h4">
-            Event Details
-          </Typography>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <FormControl>
-            <TextField
-              required={true}
-              type="string"
-              onChange={handleSportChange}
-              inputProps={{
-                style: { textAlign: "center" },
-              }}
-            />
-            <FormHelperText>
-              <span align="center">Sport</span>
-            </FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <FormControl>
-            <DatePicker onChange={handleDateChange} />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <FormControl>
-            <TextField
-              required={true}
-              type="time"
-              onChange={handleTimeChange}
-              defaultValue={"10:00"}
-              inputProps={{
-                style: { textAlign: "center" },
-              }}
-            />
-            <FormHelperText>
-              <span align="center">Time</span>
-            </FormHelperText>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Autocomplete
-            onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
-            onPlaceChanged={() => {
-              const place = autocompleteRef.current.getPlace();
-              const location = place.geometry.location;
-              setState((prevState) => ({
-                ...prevState,
-                latitude: location.lat(),
-                longitude: location.lng(),
-              }));
-            }}
-          >
-            <TextField required label="Address" type="text" />
-          </Autocomplete>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={state.beginner_friendly}
-                onChange={handleBeginnerFriendlyChange}
-              />
-            }
-            label="Beginner Friendly"
-          />
-        </Grid>
-        <Grid item xs={12} align="center">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={state.women_only}
-                onChange={handleWomenOnlyChange}
-              />
-            }
-            label="Women Only"
-          />
-        </Grid>
-        <Grid item xs={12} align="center">
-          <div style={{ height: "400px", width: "100%" }}>
-            {state.latitude && state.longitude ? (
-              <GoogleMap
-                center={{
-                  lat: parseFloat(state.latitude),
-                  lng: parseFloat(state.longitude),
-                }}
-                zoom={state.zoom}
-                mapContainerStyle={{ height: "100%", width: "100%" }}
-              >
-                <Marker
-                  position={{
-                    lat: parseFloat(state.latitude),
-                    lng: parseFloat(state.longitude),
-                  }}
-                  label=""
+      <>
+      <Navbar/>
+        <React.Fragment>
+          <AppForm>
+            <Typography variant="h3" gutterBottom marked="center" align="center" style={{fontFamily: 'Open Sans\', sans-serif'}}>
+             Events Detail
+            </Typography>
+
+            <Grid container spacing={2}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <TextField
+                        required={true}
+                        type="string"
+                        onChange={handleSportChange}
+                    />
+                    <FormHelperText align="center">Sport</FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <DatePicker onChange={handleDateChange} />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <TextField
+                        required={true}
+                        type="time"
+                        onChange={handleTimeChange}
+                        defaultValue={"10:00"}
+                        inputProps={{
+                          style: { textAlign: "center" },
+                        }}
+                    />
+                    <FormHelperText align="center">Time</FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                  <Autocomplete
+                      onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
+                      onPlaceChanged={() => {
+                        const place = autocompleteRef.current.getPlace();
+                        const location = place.geometry.location;
+                        setState((prevState) => ({
+                          ...prevState,
+                          latitude: location.lat(),
+                          longitude: location.lng(),
+                        }));
+                      }}
+                  >
+                    <TextField required label="Address" type="text" fullWidth />
+                  </Autocomplete>
+                    </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <FormControlLabel
+                    control={
+                      <Checkbox
+                          checked={state.beginner_friendly}
+                          onChange={handleBeginnerFriendlyChange}
+                      />
+                    }
+                    label="Beginner Friendly"
                 />
-              </GoogleMap>
-            ) : null}
-          </div>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleEventButtonPressed}
-          >
-            Create An Event
-          </Button>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Button color="secondary" variant="contained" to="/" component={Link}>
-            Back
-          </Button>
-        </Grid>
-      </Grid>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControlLabel
+                    control={
+                      <Checkbox
+                          checked={state.women_only}
+                          onChange={handleWomenOnlyChange}
+                      />
+                    }
+                    label="Women Only"
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <div style={{ height: "400px", width: "100%" }}>
+                  {state.latitude && state.longitude ? (
+                      <GoogleMap
+                          center={{
+                            lat: parseFloat(state.latitude),
+                            lng: parseFloat(state.longitude),
+                          }}
+                          zoom={state.zoom}
+                          mapContainerStyle={{ height: "100%", width: "100%" }}
+                      >
+                        <Marker
+                            position={{
+                              lat: parseFloat(state.latitude),
+                              lng: parseFloat(state.longitude),
+                            }}
+                            label=""
+                        />
+                      </GoogleMap>
+                  ) : null}
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={6} align="center">
+                <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={handleEventButtonPressed}
+                    fullWidth
+                >
+                  Create An Event
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={6} align="center">
+                <Button
+                    color="secondary"
+                    variant="contained"
+                    to="/"
+                    component={Link}
+                    fullWidth
+                >
+                  Back
+                </Button>
+              </Grid>
+            </Grid>
+
+          </AppForm>
+        </React.Fragment>
+
+        <AppFooter/>
+      </>
   );
 };
 
