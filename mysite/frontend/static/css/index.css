@@ -240,9 +240,9 @@ h3 {
   flex: 1; /* Increase this value to give more space to the map */
   position: relative;
   margin-right: 4rem;
-  max-width: 650px;
-  min-width: 450px;
-  max-height: 500px;
+  max-width: 1000px;
+  min-width: 900px;
+  min-height: 700px;
+  max-height: 1000px;
   margin-left: 200px;
 }
-
