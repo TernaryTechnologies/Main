@@ -15,6 +15,8 @@ import PersonOutline from "@mui/icons-material/PersonOutline";
 import LockOutlined from "@mui/icons-material/LockOutlined";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import { styled } from "@mui/system";
+import Navbar from "./Navbar";
+import AppFooter from "./AppFooter";
 
 const StyledSportsSoccerIcon = styled(SportsSoccerIcon)(({ theme }) => ({
   transition: "all 0.5s",
@@ -35,7 +37,6 @@ const StyledSportsSoccerIcon = styled(SportsSoccerIcon)(({ theme }) => ({
     },
   },
 }));
-
 
 const WavyBackground = `
   <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 320">
@@ -79,7 +80,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -92,8 +92,8 @@ function LoginForm() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
-      });
-      if (response.ok) {
+    });
+    if (response.ok) {
       const data = await response.json();
       console.log("Login response:", data);
       dispatch({
@@ -103,7 +103,7 @@ function LoginForm() {
           token: data.access,
         },
       });
-    
+
       navigate("/");
     } else {
       console.error("Login failed:", response.statusText);
@@ -111,16 +111,18 @@ function LoginForm() {
   };
 
   return (
-  <StyledGrid
-  container
-  justifyContent="center"
-  alignItems="center"
-  style={{ minHeight: "100vh" }}
-  >
-  <Grid item xs={12} sm={8} md={4}>
-  <StyledPaper style={{ padding: "24px" }}>
-  <form onSubmit={handleSubmit}>
-  <Typography
+    <>
+    <Navbar/>
+    <StyledGrid
+      container
+      justifyContent="center"
+      alignItems="center"
+      style={{ minHeight: "100vh" }}
+    >
+      <Grid item xs={12} sm={8} md={4}>
+        <StyledPaper style={{ padding: "24px" }}>
+          <form onSubmit={handleSubmit}>
+            <Typography
               variant="h4"
               align="center"
               style={{
@@ -138,88 +140,89 @@ function LoginForm() {
               <StyledSportsSoccerIcon fontSize="medium" color="primary" />
               Login
             </Typography>
-  <StyledTextField
-  fullWidth
-  margin="normal"
-  type="text"
-  placeholder="Username"
-  value={username}
-  onChange={(e) => setUsername(e.target.value)}
-  InputProps={{
-  startAdornment: (
-  <InputAdornment position="start">
-  <IconButton>
-  <PersonOutline />
-  </IconButton>
-  </InputAdornment>
-  ),
-  }}
-  />
-  <StyledTextField
-  fullWidth
-  margin="normal"
-  type="password"
-  placeholder="Password"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  InputProps={{
-  startAdornment: (
-  <InputAdornment position="start">
-  <IconButton>
-  <LockOutlined />
-  </IconButton>
-  </InputAdornment>
-  ),
-  }}
-  />
-  <Button
-  fullWidth
-  color="primary"
-  variant="contained"
-  type="submit"
-  sx={{
-    marginTop: "16px",
-    background: "linear-gradient(90deg, #0062E6 0%, #33AEFF 100%)",
-    transition: "all 0.3s",
-    '&:hover': {
-      transform: "translateY(-4px)",
-      boxShadow: '0 6px 18px rgba(0, 0, 0, 0.25)',
-    },
-  }}
->
-  Login
-</Button>
-<Grid
-  container
-  justifyContent="center"
-  style={{ marginTop: "16px" }}
->
-  <Grid item>
-    <Button
-      color="primary"
-      variant="outlined"
-      component={Link}
-      to="/register"
-      sx={{
-        borderColor: "#0062E6",
-        color: "#0062E6",
-        transition: "all 0.3s",
-        '&:hover': {
-          transform: "translateY(-4px)",
-          boxShadow: '0 6px 18px rgba(0, 0, 0, 0.25)',
-        },
-      }}
-    >
-      Create Account
-    </Button>
-  </Grid>
-</Grid>
-
-  </form>
-  </StyledPaper>
-  </Grid>
-  </StyledGrid>
+            <StyledTextField
+              fullWidth
+              margin="normal"
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton>
+                      <PersonOutline />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <StyledTextField
+              fullWidth
+              margin="normal"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton>
+                      <LockOutlined />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button
+              fullWidth
+              color="primary"
+              variant="contained"
+              type="submit"
+              sx={{
+                marginTop: "16px",
+                background: "linear-gradient(90deg, #0062E6 0%, #33AEFF 100%)",
+                transition: "all 0.3s",
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)",
+                },
+              }}
+            >
+              Login
+            </Button>
+            <Grid
+              container
+              justifyContent="center"
+              style={{ marginTop: "16px" }}
+            >
+              <Grid item>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  component={Link}
+                  to="/register"
+                  sx={{
+                    borderColor: "#0062E6",
+                    color: "#0062E6",
+                    transition: "all 0.3s",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)",
+                    },
+                  }}
+                >
+                  Create Account
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </StyledPaper>
+      </Grid>
+    </StyledGrid>
+    <AppFooter />
+    </>
   );
-  }
-  
-  export default LoginForm;
+}
+
+export default LoginForm;
