@@ -47,13 +47,13 @@ export default function AppFooter() {
                             sx={{ height: 120 }}
                         >
                             <Grid item sx={{ display: 'flex' }}>
-                                <Box component="a" href="https://mui.com/" sx={iconStyle}>
+                                <Box component="a" href="https://www.facebook.com/profile.php?id=100091758387709" sx={iconStyle}>
                                     <img
                                         src="https://mui.com/static/themes/onepirate/appFooterFacebook.png"
                                         alt="Facebook"
                                     />
                                 </Box>
-                                <Box component="a" href="https://twitter.com/MUI_hq" sx={iconStyle}>
+                                <Box component="a" href="https://twitter.com/Sportsquadus" sx={iconStyle}>
                                     <img
                                         src="https://mui.com/static/themes/onepirate/appFooterTwitter.png"
                                         alt="Twitter"
@@ -85,7 +85,7 @@ export default function AppFooter() {
                         <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
                             <Box component="li" sx={{ py: 0.5 }}>
                                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                <Typography>Email:  info@pickupsportsapp.com</Typography>
+                                <Typography>Email:  sportsquadofficial@outlook.com</Typography>
                                 <Typography>Phone:  555-555-5555</Typography>
                                 </div>
                             </Box>
