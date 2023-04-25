@@ -1,11 +1,13 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 from decimal import Decimal
-from .models import Sport, Event, Game
-from .serializers import SportSerializer, EventSerializer
+from .models import Sport, Event, PlayerEvent
+from .serializers import SportSerializer, EventSerializer, PlayerEventSerializer
 from datetime import datetime
 
 # Create your tests here.
@@ -103,13 +105,13 @@ class FilteredEventViewTest(APITestCase):
 
     def test_filter_by_beginner_friendly(self):
         url = reverse('filtered_events')
-        response = self.client.get(url, {'beginner_friendly': '1'})
+        response = self.client.get(url, {'beginner_friendly': 'true'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
 
     def test_filter_by_women_only(self):
         url = reverse('filtered_events')
-        response = self.client.get(url, {'women_only': '1'})
+        response = self.client.get(url, {'women_only': 'true'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
 
@@ -121,46 +123,66 @@ class FilteredEventViewTest(APITestCase):
 
     def test_filter_by_multiple_criteria(self):
         url = reverse('filtered_events')
-        response = self.client.get(url, {'sport': 'Basketball', 'beginner_friendly': '1', 'women_only': '1', 'user_lat': '40.8330', 'user_lng': '-74.0661', 'range': '7'})
+        response = self.client.get(url, {'sport': 'Basketball', 'beginner_friendly': 'true', 'women_only': 'true', 'user_lat': '40.8330', 'user_lng': '-74.0661', 'range': '7'})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
-# These tests cover the basic functionality of the Game model:
-# - checking that _str_ method returns expected string representation of a Game instance 
-# - sport field is properly associated with a Sport instance
-# - other fields contain the expected values.
-
-class GameModelTestCase(TestCase):
+class PlayerEventTests(APITestCase):
     def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.sport = Sport.objects.create(name='Basketball')
-        self.game = Game.objects.create(
-            name='Weekend Pickup',
+        self.event = Event.objects.create(
             sport=self.sport,
-            location='Central Park',
-            date=datetime.strptime('2023-03-20', '%Y-%m-%d').date(),
-            time=datetime.strptime('13:00', '%H:%M').time(),
-            players='John, Jane, Bob',
-            description='Friendly game of basketball'
+            date='2023-05-01',
+            time='10:00:00',
+            latitude='-37.8136',
+            longitude='144.9631',
+            beginner_friendly=True,
+            women_only=False
         )
+        self.join_event_url = reverse('join-event', kwargs={'pk': self.event.pk})
+        self.leave_event_url = reverse('leave-event', kwargs={'pk': self.event.pk})
 
-    def test_game_name(self):
-        self.assertEqual(str(self.game), 'Weekend Pickup')
+    def _get_auth_headers(self):
+        refresh = RefreshToken.for_user(self.user)
+        access_token = str(refresh.access_token)
+        return {'HTTP_AUTHORIZATION': f'Bearer {access_token}'}
 
-    def test_game_sport(self):
-        self.assertEqual(self.game.sport, self.sport)
+    def test_join_event(self):
+        auth_headers = self._get_auth_headers()
 
-    def test_game_location(self):
-        self.assertEqual(self.game.location, 'Central Park')
+        response = self.client.post(self.join_event_url, **auth_headers)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_game_date(self):
-        self.assertEqual(self.game.date.strftime('%Y-%m-%d'), '2023-03-20')
+        player_event = PlayerEvent.objects.first()
+        self.assertIsNotNone(player_event)
+        self.assertEqual(player_event.player, self.user)
+        self.assertEqual(player_event.event, self.event)
 
-    def test_game_time(self):
-        self.assertEqual(self.game.time.strftime('%H:%M'), '13:00')
+    def test_leave_event(self):
+        auth_headers = self._get_auth_headers()
 
-    def test_game_players(self):
-        self.assertEqual(self.game.players, 'John, Jane, Bob')
+        # First, join the event
+        self.client.post(self.join_event_url, **auth_headers)
 
-    def test_game_description(self):
-        self.assertEqual(self.game.description, 'Friendly game of basketball')
+        response = self.client.delete(self.leave_event_url, **auth_headers)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        player_event = PlayerEvent.objects.first()
+        self.assertIsNone(player_event)
+
+    def test_player_event_serializer(self):
+        player_event = PlayerEvent.objects.create(player=self.user, event=self.event)
+        serializer = PlayerEventSerializer(player_event)
+
+        self.assertEqual(serializer.data, {
+            'id': player_event.pk,
+            'player': {
+                'id': self.user.pk,
+                'username': self.user.username,
+                'email': self.user.email,
+                'first_name': self.user.first_name
+            },
+            'joined_at': player_event.joined_at.isoformat().replace('+00:00', 'Z')
+        })

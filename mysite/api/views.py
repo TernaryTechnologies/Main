@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.db.models import Q
 from rest_framework import generics, status
-from .serializers import EventSerializer, CreateEventSerializer, SportSerializer, ReverseGeocodeSerializer
-from .models import Event, Sport
+from .serializers import EventSerializer, CreateEventSerializer, SportSerializer, ReverseGeocodeSerializer, PlayerEventSerializer
+from .models import Event, Sport, PlayerEvent
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -85,6 +85,35 @@ class FilteredEventView(generics.ListAPIView):
             queryset = [event for event in queryset if haversine_distance(user_lat, user_lng, event.latitude, event.longitude) <= range_miles]
 
         return queryset
+
+class JoinEventView(generics.CreateAPIView):
+    queryset = PlayerEvent.objects.all()
+    serializer_class = PlayerEventSerializer
+
+    def create(self, request, *args, **kwargs):
+        event = get_object_or_404(Event, pk=self.kwargs['pk'])
+        player_event = PlayerEvent.objects.filter(player=request.user, event=event).first()
+
+        if player_event:
+            return Response({"detail": "You have already joined this event."}, status=status.HTTP_400_BAD_REQUEST)
+
+        player_event = PlayerEvent.objects.create(player=request.user, event=event)
+        serializer = self.get_serializer(player_event)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class LeaveEventView(generics.DestroyAPIView):
+    queryset = PlayerEvent.objects.all()
+    serializer_class = PlayerEventSerializer
+
+    def delete(self, request, *args, **kwargs):
+        event = get_object_or_404(Event, pk=self.kwargs['pk'])
+        player_event = PlayerEvent.objects.filter(player=request.user, event=event).first()
+
+        if not player_event:
+            return Response({"detail": "You have not joined this event."}, status=status.HTTP_400_BAD_REQUEST)
+
+        player_event.delete()
+        return Response({"detail": "You have left the event."}, status=status.HTTP_204_NO_CONTENT)
 
 class ReverseGeocodeView(APIView):
     def get(self, request):

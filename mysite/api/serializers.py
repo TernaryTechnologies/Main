@@ -1,13 +1,23 @@
 from rest_framework import serializers
-from .models import Event, Sport
+from members.serializers import UserSerializer
+from .models import Event, Sport, PlayerEvent
 
 class SportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sport
         fields = ['id', 'name']
 
+class PlayerEventSerializer(serializers.ModelSerializer):
+    player = UserSerializer()
+
+    class Meta:
+        model = PlayerEvent
+        fields = ['id', 'player', 'joined_at']
+
 class EventSerializer(serializers.ModelSerializer):
     sport = SportSerializer()
+    players = PlayerEventSerializer(many=True, read_only=True)
+
 
     class Meta:
         model = Event
@@ -20,6 +30,7 @@ class EventSerializer(serializers.ModelSerializer):
             'longitude',
             'beginner_friendly',
             'women_only',
+            'players',
         ]
 
 class CreateEventSerializer(serializers.ModelSerializer):
