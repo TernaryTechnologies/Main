@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Typography from '../components/Typography';
 
@@ -70,17 +71,17 @@ export default function AppFooter() {
                             Legal
                         </Typography>
                         <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
-                            <Box component="li" sx={{ py: 0.5 }}>
-                                <Link href="">Terms</Link>
+                            <Box component="li" sx={{ py: 0}}>
+                                <Link to="/terms" component={RouterLink} sx={{ display: 'block', py: 0 }}>Terms</Link>
                             </Box>
-                            <Box component="li" sx={{ py: 0.5 }}>
-                                <Link href="">Privacy</Link>
-                            </Box>
+                            {/* <Box component="li" sx={{ py: 0.5 }}>
+                                <Link to="/create" component={RouterLink} sx={{ display: 'block', py: 1 }}>Privacy</Link>
+                            </Box> */}
                         </Box>
                     </Grid>
                     <Grid item xs={6} sm={8} md={4}>
                         <Typography variant="h6" marked="left" gutterBottom>
-                            contact
+                            Contact
                         </Typography>
                         <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
                             <Box component="li" sx={{ py: 0.5 }}>
