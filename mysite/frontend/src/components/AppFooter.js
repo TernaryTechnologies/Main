@@ -72,7 +72,7 @@ export default function AppFooter() {
                         </Typography>
                         <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
                             <Box component="li" sx={{ py: 0}}>
-                                <Link to="/terms" component={RouterLink} sx={{ display: 'block', py: 0 }}>Terms</Link>
+                                <Link to="/terms" component={RouterLink} sx={{ display: 'block', py: 3 }}>Terms</Link>
                             </Box>
                             {/* <Box component="li" sx={{ py: 0.5 }}>
                                 <Link to="/create" component={RouterLink} sx={{ display: 'block', py: 1 }}>Privacy</Link>
