@@ -1,12 +1,15 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.db.models import Q
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
+from rest_framework.request import Request
+from rest_framework.decorators import permission_classes
 from .serializers import EventSerializer, CreateEventSerializer, SportSerializer, ReverseGeocodeSerializer, PlayerEventSerializer
 from .models import Event, Sport, PlayerEvent
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .permissions import DebugIsAuthenticated
 import requests
 import math
 
@@ -34,6 +37,14 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 class EventView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+    def get_queryset(self):
+        queryset = Event.objects.all()
+        print("Event QuerySet:", queryset)
+        for event in queryset:
+            print("Players for Event", event.id, ":", event.players.all())
+        return queryset
+
 
 class CreateEventView(APIView):
     def post(self, request):
@@ -86,9 +97,11 @@ class FilteredEventView(generics.ListAPIView):
 
         return queryset
 
+
 class JoinEventView(generics.CreateAPIView):
     queryset = PlayerEvent.objects.all()
     serializer_class = PlayerEventSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         event = get_object_or_404(Event, pk=self.kwargs['pk'])
@@ -104,6 +117,8 @@ class JoinEventView(generics.CreateAPIView):
 class LeaveEventView(generics.DestroyAPIView):
     queryset = PlayerEvent.objects.all()
     serializer_class = PlayerEventSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
 
     def delete(self, request, *args, **kwargs):
         event = get_object_or_404(Event, pk=self.kwargs['pk'])
