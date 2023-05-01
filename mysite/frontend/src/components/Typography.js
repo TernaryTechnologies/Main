@@ -13,11 +13,11 @@ const markClassesMapping = {
         h6: '',
     },
     left: {
-        h1: '',
-        h2: '',
-        h3: '',
-        h4: '',
-        h5: '',
+        h1: 'OnePirateTypography-markedH6Left',
+        h2: 'OnePirateTypography-markedH6Left',
+        h3: 'OnePirateTypography-markedH6Left',
+        h4: 'OnePirateTypography-markedH6Left',
+        h5: 'OnePirateTypography-markedH6Left',
         h6: 'OnePirateTypography-markedH6Left',
     },
     none: {

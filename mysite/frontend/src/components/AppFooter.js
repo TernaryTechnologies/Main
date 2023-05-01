@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Typography from '../components/Typography';
 
@@ -47,13 +48,13 @@ export default function AppFooter() {
                             sx={{ height: 120 }}
                         >
                             <Grid item sx={{ display: 'flex' }}>
-                                <Box component="a" href="https://mui.com/" sx={iconStyle}>
+                                <Box component="a" href="https://www.facebook.com/profile.php?id=100091758387709" sx={iconStyle}>
                                     <img
                                         src="https://mui.com/static/themes/onepirate/appFooterFacebook.png"
                                         alt="Facebook"
                                     />
                                 </Box>
-                                <Box component="a" href="https://twitter.com/MUI_hq" sx={iconStyle}>
+                                <Box component="a" href="https://twitter.com/Sportsquadus" sx={iconStyle}>
                                     <img
                                         src="https://mui.com/static/themes/onepirate/appFooterTwitter.png"
                                         alt="Twitter"
@@ -70,22 +71,22 @@ export default function AppFooter() {
                             Legal
                         </Typography>
                         <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
-                            <Box component="li" sx={{ py: 0.5 }}>
-                                <Link href="">Terms</Link>
+                            <Box component="li" sx={{ py: 0}}>
+                                <Link to="/terms" component={RouterLink} sx={{ display: 'block', py: 3 }}>Terms</Link>
                             </Box>
-                            <Box component="li" sx={{ py: 0.5 }}>
-                                <Link href="">Privacy</Link>
-                            </Box>
+                            {/* <Box component="li" sx={{ py: 0.5 }}>
+                                <Link to="/create" component={RouterLink} sx={{ display: 'block', py: 1 }}>Privacy</Link>
+                            </Box> */}
                         </Box>
                     </Grid>
                     <Grid item xs={6} sm={8} md={4}>
                         <Typography variant="h6" marked="left" gutterBottom>
-                            contact
+                            Contact
                         </Typography>
                         <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
                             <Box component="li" sx={{ py: 0.5 }}>
                                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                <Typography>Email:  info@pickupsportsapp.com</Typography>
+                                <Typography>Email:  sportsquadofficial@outlook.com</Typography>
                                 <Typography>Phone:  555-555-5555</Typography>
                                 </div>
                             </Box>

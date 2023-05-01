@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import HomePage from "./HomePage";
 import CreateEventPage from "./CreateEventPage";
+import TermsPage from "./TermsPage";
 import LoginForm from "./LoginForm";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -72,6 +73,7 @@ function MainApp({ state, dispatch }) {
               <Route exact path="/create" element={<CreateEventPage />} />
               <Route exact path="/login" element={<LoginForm />} />
               <Route exact path="/register" element={<RegisterForm />} />
+              <Route exact path="/terms" element={<TermsPage />} />
             </Routes>
           </Router>
         </LocalizationProvider>
