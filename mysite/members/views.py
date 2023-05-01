@@ -4,8 +4,10 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
+from rest_framework_simplejwt.tokens import AccessToken
 from .serializers import RegisterSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+from datetime import datetime, timedelta
 
 class ListUsersView(ListAPIView):
     queryset = User.objects.all()
@@ -21,11 +23,13 @@ class RegisterView(generics.CreateAPIView):
     if response.status_code == status.HTTP_201_CREATED:
       user = User.objects.get(username=request.data['username'])
       refresh = RefreshToken.for_user(user)
+      access_token = AccessToken.for_user(user)
       serializer = UserSerializer(user)
       response.data.update({
         'refresh': str(refresh),
-        'access': str(refresh.access_token),
+        'access': str(access_token),
         'user': serializer.data,
+        'expires': (datetime.now() + timedelta(seconds=access_token.lifetime.total_seconds())).isoformat(),
       })
     return response
 
@@ -38,11 +42,13 @@ class LoginView(views.APIView):
 
     if user is not None:
       refresh = RefreshToken.for_user(user)
+      access_token = AccessToken.for_user(user)
       serializer = UserSerializer(user)
       data = {
         'refresh': str(refresh),
-        'access': str(refresh.access_token),
+        'access': str(access_token),
         'user': serializer.data,
+        'expires': (datetime.now() + timedelta(seconds=access_token.lifetime.total_seconds())).isoformat(),
       }
       return Response(data, status=status.HTTP_200_OK)
     else:

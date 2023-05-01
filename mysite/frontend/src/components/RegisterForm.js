@@ -66,6 +66,8 @@ function RegisterForm() {
         payload: {
           user: data.user,
           token: data.access,
+          refreshToken: data.refresh,
+          tokenExpiration: data.expires,
         },
       });
 
