@@ -229,11 +229,12 @@ h3 {
 
 .event-list-wrapper {
   flex: 1;
-  height: 100%;
   overflow-y: auto;
   max-width: 500px;
-  min-width: 350px;
+  min-width: 450px;
   margin-right: 2rem;
+  height: 900px;
+  padding: 20px;
 }
 
 .map-wrapper {
@@ -241,8 +242,8 @@ h3 {
   position: relative;
   margin-right: 4rem;
   max-width: 1000px;
-  min-width: 900px;
-  min-height: 700px;
-  max-height: 1000px;
+  min-width: 800px;
+  min-height: 600px;
+  max-height: 800px;
   margin-left: 200px;
 }
