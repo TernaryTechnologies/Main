@@ -16,7 +16,7 @@ class PlayerEventSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     sport = SportSerializer()
-    players = PlayerEventSerializer(many=True, read_only=True)
+    players = PlayerEventSerializer(many=True, read_only=True,source='playerevent_set')
 
 
     class Meta:
