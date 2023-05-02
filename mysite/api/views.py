@@ -9,7 +9,6 @@ from .models import Event, Sport, PlayerEvent
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .permissions import DebugIsAuthenticated
 import requests
 import math
 
@@ -38,12 +37,14 @@ class EventView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+    """
     def get_queryset(self):
         queryset = Event.objects.all()
         print("Event QuerySet:", queryset)
         for event in queryset:
             print("Players for Event", event.id, ":", event.players.all())
         return queryset
+    """
 
 
 class CreateEventView(APIView):
@@ -163,6 +164,3 @@ def geocode(request):
     except Exception as e:
         print("Error geocoding address:", e)
         return Response({"error": "Error geocoding address"}, status=500)
-
-def index(request):
-    return HttpResponse("Hello, you are at the api index")
