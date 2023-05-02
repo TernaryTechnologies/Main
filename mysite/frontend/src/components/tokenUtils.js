@@ -1,4 +1,4 @@
-// tokenUtils.js
+
 async function refreshToken(refreshToken) {
   const requestOptions = {
     method: "POST",
@@ -19,6 +19,7 @@ async function refreshToken(refreshToken) {
     }
   } catch (error) {
     console.error("Error:", error);
+    throw error;
   }
 }
 
