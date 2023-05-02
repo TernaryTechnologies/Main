@@ -3,7 +3,6 @@ import { GoogleMap, Marker } from "@react-google-maps/api";
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { AuthContext } from "./App";
 import {
-  refreshToken,
   handleTokenRefreshed,
   fetchWithTokenRefresh,
 } from "./tokenUtils";
@@ -21,7 +20,7 @@ function groupEventsByAddress(events) {
   return Object.values(groupedEvents);
 }
 
-const EventListItem = ({ eventGroup, eventNumber, context }) => {
+const EventListItem = ({ eventGroup, eventNumber, context, triggerEventsUpdate }) => {
   const [address, setAddress] = useState("");
   const [joinedEventIds, setJoinedEventIds] = useState([]);
 
@@ -84,12 +83,14 @@ const EventListItem = ({ eventGroup, eventNumber, context }) => {
           ...prevJoinedEventIds,
           eventId,
         ]);
+        triggerEventsUpdate();
       } else {
         const error = await response.json();
         alert(`Failed to join the event: ${error.detail}`);
       }
     } catch (error) {
       console.error("Error:", error);
+      dispatch({ type: "LOGOUT" });
     }
   };
   
@@ -120,6 +121,7 @@ const EventListItem = ({ eventGroup, eventNumber, context }) => {
         setJoinedEventIds((prevJoinedEventIds) =>
           prevJoinedEventIds.filter((id) => id !== eventId)
         );
+        triggerEventsUpdate();
       } else {
         const error = await response.json();
         alert(`Failed to leave the event: ${error.detail}`);
@@ -147,6 +149,7 @@ const EventListItem = ({ eventGroup, eventNumber, context }) => {
             Women Only: {event.women_only ? "Yes" : "No"}
           </div>
           <div className="event-detail">Address: {address}</div>
+          <div className="event-detail">Players: {event.players.length}</div>
           <div>
             {joinedEventIds.includes(eventGroup[0].id) ? (
               <button onClick={() => leaveEvent(eventGroup[0].id)}>
@@ -189,6 +192,13 @@ const FilteredEvents = ({ latitude, longitude }) => {
     range: 50,
   });
 
+  const [eventsVersion, setEventsVersion] = useState(0);
+
+  const triggerEventsUpdate = () => {
+    setEventsVersion((prevVersion) => prevVersion + 1);
+  };
+
+
   const fetchEvents = async () => {
     const queryParameters = new URLSearchParams(filters).toString();
     const response = await fetch(`/api/filtered/?${queryParameters}`);
@@ -208,7 +218,7 @@ const FilteredEvents = ({ latitude, longitude }) => {
 
   useEffect(() => {
     fetchEvents();
-  }, [filters]);
+  }, [filters, eventsVersion]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -284,6 +294,7 @@ const FilteredEvents = ({ latitude, longitude }) => {
                 eventGroup={eventGroup}
                 eventNumber={index + 1}
                 context={context}
+                triggerEventsUpdate={triggerEventsUpdate}
               />
             ))}
           </ul>
