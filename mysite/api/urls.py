@@ -1,9 +1,8 @@
 from django.urls import path
 from . import views
-from .views import EventView, CreateEventView, FilteredEventView, index
+from .views import EventView, CreateEventView, FilteredEventView
 
 urlpatterns = [
-  path('', index, name='index'),
   path('all', EventView.as_view(), name='event_list'),
   path('create-event', CreateEventView.as_view(), name='create_event'),
   path('geocode/', views.geocode, name='geocode'),
