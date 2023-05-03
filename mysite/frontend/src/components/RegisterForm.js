@@ -84,16 +84,6 @@ function RegisterForm() {
           <Typography variant="h3" gutterBottom marked="center" align="center" style={{fontFamily: 'Open Sans\', sans-serif'}}>
             Create an Account
           </Typography>
-          <Typography variant="body2" align="center">
-            {'Not a member yet? '}
-            <Link
-                href="/premium-themes/onepirate/sign-up/"
-                align="center"
-                underline="always"
-            >
-              Sign Up here
-            </Link>
-          </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>

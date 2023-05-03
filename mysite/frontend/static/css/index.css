@@ -233,17 +233,17 @@ h3 {
   max-width: 500px;
   min-width: 450px;
   margin-right: 2rem;
-  height: 900px;
+  height: 80vh;
   padding: 20px;
 }
 
 .map-wrapper {
-  flex: 1; /* Increase this value to give more space to the map */
+  flex: 1;
   position: relative;
   margin-right: 4rem;
-  max-width: 1000px;
-  min-width: 800px;
-  min-height: 600px;
-  max-height: 800px;
+  max-width: 50vw;
+  min-width: 40vw;
+  min-height: 70vh;
+  max-height: 80vh;
   margin-left: 200px;
 }
