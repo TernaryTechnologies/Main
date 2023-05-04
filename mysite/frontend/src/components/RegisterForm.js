@@ -66,6 +66,7 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [showFailedMessage, setShowFailedMessage] = useState(false);
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -99,6 +100,8 @@ function RegisterForm() {
 
       navigate("/");
     } else {
+
+      setShowFailedMessage(true);
       console.error("Registration failed:", response.statusText);
     }
   };
@@ -249,6 +252,20 @@ function RegisterForm() {
               >
                 Register
               </Button>
+              { /* conditionally render failed login message */
+                showFailedMessage && 
+                <Typography
+                  variant="b1"
+                  align="center"
+                  style={{
+                    marginBottom: "1rem",
+                    fontWeight: "bold",
+                    color: "#1e5d8c",
+                  }}
+                >
+                  That email might be in use already, or you may not have filled all the fields.
+                </Typography>
+              }
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link href="/login" variant="body2" sx={{ color: "#4a90e2" }}>
