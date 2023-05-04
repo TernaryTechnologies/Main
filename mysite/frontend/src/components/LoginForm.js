@@ -200,7 +200,7 @@ function LoginForm() {
               style={{
                 marginBottom: "1rem",
                 fontWeight: "bold",
-                color: "#0062E6",
+                color: "#1e5d8c",
               }}
             >
               No matching Username/Password combination found.
