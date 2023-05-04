@@ -55,33 +55,6 @@ h1 {
   cursor: pointer;
 }
 
-.navbar {
-  background-color: #fff;
-  padding: 20px 20px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.navbar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-.navbar li {
-  margin-right: 20px;
-}
-
-.navbar li a {
-  color: #333;
-  text-decoration: none;
-  font-size: 1.2em;
-}
-
-.navbar li a:hover {
-  color: #0099ff;
-}
-
 .banner {
   height: 250px;
   background-color: #eee;
@@ -247,3 +220,21 @@ h3 {
   max-height: 80vh;
   margin-left: 200px;
 }
+
+.navbar-color {
+  background-color: #002f5c;
+  background-image: linear-gradient(to bottom, #002f5c, #004c9e);
+}
+
+.navbar-color li a:hover {
+  background-color: #29789e;
+  color: white;
+  
+}
+
+
+.navbar-color li a {
+  transition: all 0.2s ease-in-out;
+}
+
+
