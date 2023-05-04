@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {AppBar, Button, Card, CardContent, CardMedia, IconButton, Toolbar, Typography} from "@mui/material";
+import { Button, Typography} from "@mui/material";
 import { AuthContext } from "./App";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import Navbar from "./Navbar";
-import Footer from "./Footer";
-import ActionBlock from "./ActionBlock";
 import Hero from "./Hero";
 import AppFooter from "./AppFooter";
 import withRoot from "./withRoot";
-import Box from "@mui/material/Box";
 import FilteredEvents from "./FilteredEvents";
 import Grid from "@mui/material/Grid";
 import AppForm from "./AppForm";
+import SportSquadLogo from '../assets/logo.png';
 
 function HomePage() {
   const { state, dispatch } = useContext(AuthContext);
@@ -84,7 +82,9 @@ function HomePage() {
   return (
     <div>
       <div className="header">
-        <h1>Sport Squad</h1>
+        <div>
+          <img src={SportSquadLogo} alt="Sport Squad" />
+        </div>
         <h2>
           {isAuthenticated ? (
             <div style={{ display: "flex", alignItems: "center" }}>
