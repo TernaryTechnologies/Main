@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import Button from '../components/Button';
+import { Button } from '@mui/material';
 import Typography from '../components/Typography';
 import ProductHeroLayout from '../modules/HeroLayout';
 import { AuthContext } from "./App";
@@ -45,7 +45,11 @@ export default function Hero() {
                 size="large"
                 component="a"
                 href="/register"
-                sx={{ minWidth: 200 }}
+                sx={{ minWidth: 200, 
+                    transition: "all 0.3s",
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)",}, }}
             >
                 Get Started
             </Button>
