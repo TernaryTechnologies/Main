@@ -38,17 +38,12 @@ const StyledSportsSoccerIcon = styled(SportsSoccerIcon)(({ theme }) => ({
   },
 }));
 
-const WavyBackground = `
-  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 320">
-    <path fill="#35B0FF" fill-opacity="0.1" d="M0,64L48,69.3C96,75,192,85,288,106.7C384,128,480,160,576,181.3C672,203,768,213,864,197.3C960,181,1056,139,1152,128C1248,117,1344,139,1392,149.3L1440,160V320H1392C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320H0V64Z"></path>
-  </svg>
-`;
+const backgroundImage =
+    'https://images.unsplash.com/photo-1474224017046-182ece80b263?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80';
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   height: "100vh",
-  backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(
-    WavyBackground
-  )}"), radial-gradient(circle at center, #0062E6 0%, #1E76BC 100%)`,
+  backgroundImage: `url(${backgroundImage})`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   display: "flex",
@@ -62,21 +57,21 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   borderRadius: "12px",
-  background: "rgba(245, 249, 255, 0.9)", // Slightly transparent blueish white background
+  background: "rgba(245, 249, 255, 0.9)", // Slightly transparent
   boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.25)", // Add a subtle shadow
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: "#0062E6",
+      borderColor: "#1e5d8c",
     },
     "&:hover fieldset": {
-      borderColor: "#0062E6",
+      borderColor: "#1e5d8c",
     },
   },
   "& label.Mui-focused": {
-    color: "#0062E6",
+    color: "#1e5d8c",
   },
 }));
 
@@ -130,7 +125,7 @@ function LoginForm() {
               style={{
                 marginBottom: "1rem",
                 fontWeight: "bold",
-                color: "#0062E6",
+                color: "#1e5d8c",
               }}
               onMouseEnter={(e) =>
                 e.currentTarget.querySelector("svg").classList.add("hover")
@@ -139,7 +134,7 @@ function LoginForm() {
                 e.currentTarget.querySelector("svg").classList.remove("hover")
               }
             >
-              <StyledSportsSoccerIcon fontSize="medium" color="primary" />
+              <StyledSportsSoccerIcon fontSize="medium"/>
               Login
             </Typography>
             <StyledTextField
@@ -183,7 +178,7 @@ function LoginForm() {
               type="submit"
               sx={{
                 marginTop: "16px",
-                background: "linear-gradient(90deg, #0062E6 0%, #33AEFF 100%)",
+                background: "linear-gradient(90deg, #003c4a 0%, #2E73B5 100%)",
                 transition: "all 0.3s",
                 "&:hover": {
                   transform: "translateY(-4px)",
@@ -205,8 +200,8 @@ function LoginForm() {
                   component={Link}
                   to="/register"
                   sx={{
-                    borderColor: "#0062E6",
-                    color: "#0062E6",
+                    borderColor: "#1e5d8c",
+                    color: "#1e5d8c",
                     transition: "all 0.3s",
                     "&:hover": {
                       transform: "translateY(-4px)",
