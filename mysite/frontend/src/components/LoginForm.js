@@ -83,6 +83,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showFailedMessage, setShowFailedMessage] = useState(false);
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -108,6 +109,8 @@ function LoginForm() {
 
       navigate("/");
     } else {
+      // should display message that login failed, then log failure in the console.
+      setShowFailedMessage(true);
       console.error("Login failed:", response.statusText);
     }
   };
@@ -193,6 +196,21 @@ function LoginForm() {
             >
               Login
             </Button>
+            
+            { /* conditionally render failed login message */
+            showFailedMessage && 
+            <Typography
+              variant="b1"
+              align="center"
+              style={{
+                marginBottom: "1rem",
+                fontWeight: "bold",
+                color: "#0062E6",
+              }}
+            >
+              No matching Username/Password combination found.
+            </Typography>
+            }
             <Grid
               container
               justifyContent="center"
