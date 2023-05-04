@@ -96,6 +96,13 @@ function HomePage() {
                   color="secondary"
                   variant="contained"
                   onClick={handleLogout}
+                  sx={{
+                    transition: "all 0.3s",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)",
+                    },
+                  }}
                 >
                   Logout
                 </Button>
@@ -109,6 +116,14 @@ function HomePage() {
                   variant="contained"
                   to="/login"
                   component={Link}
+                  sx={{
+                    
+                    transition: "all 0.3s",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)",
+                    },
+                  }}
                 >
                   Login
                 </Button>
@@ -119,6 +134,13 @@ function HomePage() {
                   variant="contained"
                   to="/register"
                   component={Link}
+                  sx={{
+                    transition: "all 0.3s",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)",
+                    },
+                  }}
                 >
                   Register
                 </Button>
