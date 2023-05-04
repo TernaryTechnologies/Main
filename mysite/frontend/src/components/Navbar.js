@@ -1,15 +1,14 @@
 import React from 'react';
-import {Link} from "@mui/material";
 
 const Navbar = () => {
     const navLinks = [
         { label: "Home", link: "/" },
-        { label: "Events", link: "/create" },
-        { label: "Teams", link: "/" },
+        { label: "Create Event", link: "/create" },
+        //{ label: "Teams", link: "/" },
         { label: "Profile", link: "/" },
     ];
     return (
-        <nav className="teal lighten-1">
+        <nav className="navbar-color">
             <div className="nav-wrapper">
                 <a href="#" data-activates="mobile-demo" className="button-collapse right">
                     <i className="material-icons">menu</i>
