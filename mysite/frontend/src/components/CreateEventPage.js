@@ -4,29 +4,54 @@ import {
   Checkbox,
   Button,
   Grid,
+  Paper,
+  Container,
   Typography,
   TextField,
   FormHelperText,
   FormControl,
-  FormControlLabel, AppBar, InputAdornment, IconButton,
+  FormControlLabel,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Autocomplete,
-  GoogleMap,
-  Marker,
-} from "@react-google-maps/api";
+import { Autocomplete, GoogleMap, Marker } from "@react-google-maps/api";
 import AppFooter from "./AppFooter";
-import PersonOutline from "@mui/icons-material/PersonOutline";
-import LockOutlined from "@mui/icons-material/LockOutlined";
 import Navbar from "./Navbar";
-import AppForm from "./AppForm";
+import { styled } from "@mui/system";
 
 function roundToDecimalPlaces(value, decimalPlaces) {
   const factor = Math.pow(10, decimalPlaces);
   return Math.round(value * factor) / factor;
 }
+
+const backgroundImage =
+  "https://images.unsplash.com/photo-1474224017046-182ece80b263?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80";
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  borderRadius: "12px",
+  background: "rgba(245, 249, 255, 0.8)", // Slightly transparent
+  boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.25)", // Add a subtle shadow
+}));
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+}));
+
+const CenteredContainer = styled(Container)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+});
 
 const CreateEventPage = () => {
   const navigate = useNavigate();
@@ -147,34 +172,50 @@ const CreateEventPage = () => {
   };
 
   return (
-      <>
-      <Navbar/>
-        <React.Fragment>
-          <AppForm>
-            <Typography variant="h3" gutterBottom marked="center" align="center" style={{fontFamily: 'Open Sans\', sans-serif'}}>
-             Events Detail
-            </Typography>
+    <>
+      <Navbar />
+      <React.Fragment>
+        <StyledGrid
+          container
+          justifyContent="center"
+          alignItems="center"
+          style={{ minHeight: "140vh" }}
+        >
+          <CenteredContainer maxWidth="sm">
+            <StyledPaper>
+              <Typography
+                variant="h3"
+                gutterBottom
+                align="center"
+                style={{
+                  marginBottom: "2rem",
+                  fontWeight: "bold",
+                  color: "#1e5d8c",
+                }}
+              >
+                Event Details
+              </Typography>
 
-            <Grid container spacing={2}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <TextField
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <TextField
                         required={true}
                         type="string"
                         onChange={handleSportChange}
-                    />
-                    <FormHelperText align="center">Sport</FormHelperText>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <DatePicker onChange={handleDateChange} />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <TextField
+                      />
+                      <FormHelperText align="center">Sport</FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <DatePicker onChange={handleDateChange} />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <TextField
                         required={true}
                         type="time"
                         onChange={handleTimeChange}
@@ -182,102 +223,128 @@ const CreateEventPage = () => {
                         inputProps={{
                           style: { textAlign: "center" },
                         }}
-                    />
-                    <FormHelperText align="center">Time</FormHelperText>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                  <Autocomplete
-                      onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
-                      onPlaceChanged={() => {
-                        const place = autocompleteRef.current.getPlace();
-                        const location = place.geometry.location;
-                        setState((prevState) => ({
-                          ...prevState,
-                          latitude: location.lat(),
-                          longitude: location.lng(),
-                        }));
-                      }}
-                  >
-                    <TextField required label="Address" type="text" fullWidth />
-                  </Autocomplete>
+                      />
+                      <FormHelperText align="center">Time</FormHelperText>
                     </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <Autocomplete
+                        onLoad={(autocomplete) =>
+                          (autocompleteRef.current = autocomplete)
+                        }
+                        onPlaceChanged={() => {
+                          const place = autocompleteRef.current.getPlace();
+                          const location = place.geometry.location;
+                          setState((prevState) => ({
+                            ...prevState,
+                            latitude: location.lat(),
+                            longitude: location.lng(),
+                          }));
+                        }}
+                      >
+                        <TextField
+                          required
+                          label="Address"
+                          type="text"
+                          fullWidth
+                        />
+                      </Autocomplete>
+                    </FormControl>
+                  </Grid>
                 </Grid>
-              </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <FormControlLabel
+                <Grid item xs={12} sm={6}>
+                  <FormControlLabel
                     control={
                       <Checkbox
-                          checked={state.beginner_friendly}
-                          onChange={handleBeginnerFriendlyChange}
+                        checked={state.beginner_friendly}
+                        onChange={handleBeginnerFriendlyChange}
                       />
                     }
                     label="Beginner Friendly"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControlLabel
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControlLabel
                     control={
                       <Checkbox
-                          checked={state.women_only}
-                          onChange={handleWomenOnlyChange}
+                        checked={state.women_only}
+                        onChange={handleWomenOnlyChange}
                       />
                     }
                     label="Women Only"
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <div style={{ height: "400px", width: "100%" }}>
-                  {state.latitude && state.longitude ? (
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <div style={{ height: "400px", width: "100%" }}>
+                    {state.latitude && state.longitude ? (
                       <GoogleMap
-                          center={{
+                        center={{
+                          lat: parseFloat(state.latitude),
+                          lng: parseFloat(state.longitude),
+                        }}
+                        zoom={state.zoom}
+                        mapContainerStyle={{ height: "100%", width: "100%" }}
+                      >
+                        <Marker
+                          position={{
                             lat: parseFloat(state.latitude),
                             lng: parseFloat(state.longitude),
                           }}
-                          zoom={state.zoom}
-                          mapContainerStyle={{ height: "100%", width: "100%" }}
-                      >
-                        <Marker
-                            position={{
-                              lat: parseFloat(state.latitude),
-                              lng: parseFloat(state.longitude),
-                            }}
-                            label=""
+                          label=""
                         />
                       </GoogleMap>
-                  ) : null}
-                </div>
-              </Grid>
-              <Grid item xs={12} sm={6} align="center">
-                <Button
-                    color="primary"
+                    ) : null}
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={6} align="center">
+                  <Button
                     variant="contained"
                     onClick={handleEventButtonPressed}
                     fullWidth
-                >
-                  Create An Event
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={6} align="center">
-                <Button
-                    color="secondary"
+                    sx={{
+                      background:
+                        "linear-gradient(90deg, #003c4a 0%, #2E73B5 100%)",
+                      color: "#fff",
+                      transition: "all 0.3s",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                        boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)",
+                      },
+                    }}
+                  >
+                    Create An Event
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} align="center">
+                  <Button
                     variant="contained"
                     to="/"
                     component={Link}
                     fullWidth
-                >
-                  Back
-                </Button>
+                    sx={{
+                      background:
+                        "linear-gradient(90deg, #1d8fac 0%, #6aa4e4 100%)",
+                      color: "#fff",
+                      transition: "all 0.3s",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                        boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)",
+                      },
+                    }}
+                  >
+                    Back
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
+            </StyledPaper>
+          </CenteredContainer>
+        </StyledGrid>
+      </React.Fragment>
 
-          </AppForm>
-        </React.Fragment>
-
-        <AppFooter/>
-      </>
+      <AppFooter />
+    </>
   );
 };
 
